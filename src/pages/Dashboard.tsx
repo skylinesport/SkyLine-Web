@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award } from 'lucide-react';
+import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Shield, Copy } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
@@ -10,6 +10,9 @@ import { StarRating } from '@/components/StarRating';
 import { ProgressBar } from '@/components/ProgressBar';
 import { AchievementCard } from '@/components/AchievementCard';
 import { Badge } from '@/components/Badge';
+import { IdentityCard } from '@/components/IdentityCard';
+import { NotificationBell } from '@/components/NotificationBell';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,12 +20,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 
+interface AchievementForm {
+  title: string;
+  description: string;
+  category_id: string;
+  achievement_date: string;
+  proof_url: string;
+}
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [newAchievement, setNewAchievement] = useState({
+  const [editingAchievement, setEditingAchievement] = useState<string | null>(null);
+  const [form, setForm] = useState<AchievementForm>({
     title: '', description: '', category_id: '', achievement_date: '', proof_url: ''
   });
 
@@ -34,6 +46,16 @@ export default function Dashboard() {
         .select('*')
         .eq('id', user?.id)
         .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user?.id,
+  });
+
+  const { data: isAdmin } = useQuery({
+    queryKey: ['is-admin', user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('is_admin', { _user_id: user?.id });
       if (error) throw error;
       return data;
     },
@@ -80,22 +102,45 @@ export default function Dashboard() {
     mutationFn: async () => {
       const { error } = await supabase.from('achievements').insert({
         user_id: user?.id,
-        title: newAchievement.title,
-        description: newAchievement.description || null,
-        category_id: newAchievement.category_id,
-        achievement_date: newAchievement.achievement_date || null,
-        proof_url: newAchievement.proof_url || null,
+        title: form.title,
+        description: form.description || null,
+        category_id: form.category_id,
+        achievement_date: form.achievement_date || null,
+        proof_url: form.proof_url || null,
       });
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['achievements'] });
       queryClient.invalidateQueries({ queryKey: ['profile'] });
-      setDialogOpen(false);
-      setNewAchievement({ title: '', description: '', category_id: '', achievement_date: '', proof_url: '' });
+      queryClient.invalidateQueries({ queryKey: ['user-badges'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      closeDialog();
       toast.success('Achievement added!');
     },
     onError: () => toast.error('Failed to add achievement'),
+  });
+
+  const updateAchievement = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from('achievements')
+        .update({
+          title: form.title,
+          description: form.description || null,
+          category_id: form.category_id,
+          achievement_date: form.achievement_date || null,
+          proof_url: form.proof_url || null,
+        })
+        .eq('id', editingAchievement);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['achievements'] });
+      closeDialog();
+      toast.success('Achievement updated!');
+    },
+    onError: () => toast.error('Failed to update achievement'),
   });
 
   const deleteAchievement = useMutation({
@@ -115,6 +160,33 @@ export default function Dashboard() {
     navigate('/');
   };
 
+  const closeDialog = () => {
+    setDialogOpen(false);
+    setEditingAchievement(null);
+    setForm({ title: '', description: '', category_id: '', achievement_date: '', proof_url: '' });
+  };
+
+  const handleEdit = (achievement: any) => {
+    setEditingAchievement(achievement.id);
+    setForm({
+      title: achievement.title,
+      description: achievement.description || '',
+      category_id: achievement.category_id,
+      achievement_date: achievement.achievement_date || '',
+      proof_url: achievement.proof_url || '',
+    });
+    setDialogOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingAchievement) {
+      updateAchievement.mutate();
+    } else {
+      addAchievement.mutate();
+    }
+  };
+
   const starRating = Number(profile?.star_rating || 0);
   const nextStar = Math.ceil(starRating) || 1;
   const progressToNext = nextStar > 0 ? ((starRating % 1) * 100) : 0;
@@ -131,7 +203,16 @@ export default function Dashboard() {
             <span className="text-xl font-bold gold-text">LocaTrack</span>
           </Link>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <NotificationBell />
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="ghost" size="icon" className="text-destructive">
+                  <Shield className="w-5 h-5" />
+                </Button>
+              </Link>
+            )}
             <Link to={`/profile/${profile?.user_code}`}>
               <Button variant="ghost" size="icon"><User className="w-5 h-5" /></Button>
             </Link>
@@ -186,8 +267,24 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          {/* Badges */}
+          {/* Identity Card */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-3 glass-card p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Copy className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold">Your Digital ID</h2>
+            </div>
+            {profile && (
+              <IdentityCard
+                name={profile.full_name}
+                userCode={profile.user_code}
+                starRating={Number(profile.star_rating)}
+                totalAchievements={profile.total_achievements}
+              />
+            )}
+          </motion.div>
+
+          {/* Badges */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3 glass-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <Award className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold">Your Badges</h2>
@@ -204,10 +301,13 @@ export default function Dashboard() {
           </motion.div>
 
           {/* Achievements */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="lg:col-span-3">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">My Achievements</h2>
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <Dialog open={dialogOpen} onOpenChange={(open) => {
+                if (!open) closeDialog();
+                else setDialogOpen(true);
+              }}>
                 <DialogTrigger asChild>
                   <Button className="gold-gradient text-primary-foreground">
                     <Plus className="w-4 h-4 mr-2" /> Add Achievement
@@ -215,16 +315,16 @@ export default function Dashboard() {
                 </DialogTrigger>
                 <DialogContent className="bg-card border-border">
                   <DialogHeader>
-                    <DialogTitle>Add New Achievement</DialogTitle>
+                    <DialogTitle>{editingAchievement ? 'Edit Achievement' : 'Add New Achievement'}</DialogTitle>
                   </DialogHeader>
-                  <form onSubmit={(e) => { e.preventDefault(); addAchievement.mutate(); }} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <Label>Title *</Label>
-                      <Input value={newAchievement.title} onChange={(e) => setNewAchievement({ ...newAchievement, title: e.target.value })} required />
+                      <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
                     </div>
                     <div>
                       <Label>Category *</Label>
-                      <Select value={newAchievement.category_id} onValueChange={(v) => setNewAchievement({ ...newAchievement, category_id: v })}>
+                      <Select value={form.category_id} onValueChange={(v) => setForm({ ...form, category_id: v })}>
                         <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                         <SelectContent>
                           {categories?.map((cat) => (
@@ -235,18 +335,22 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <Label>Description</Label>
-                      <Textarea value={newAchievement.description} onChange={(e) => setNewAchievement({ ...newAchievement, description: e.target.value })} />
+                      <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
                     </div>
                     <div>
                       <Label>Date</Label>
-                      <Input type="date" value={newAchievement.achievement_date} onChange={(e) => setNewAchievement({ ...newAchievement, achievement_date: e.target.value })} />
+                      <Input type="date" value={form.achievement_date} onChange={(e) => setForm({ ...form, achievement_date: e.target.value })} />
                     </div>
                     <div>
                       <Label>Proof URL</Label>
-                      <Input value={newAchievement.proof_url} onChange={(e) => setNewAchievement({ ...newAchievement, proof_url: e.target.value })} placeholder="https://..." />
+                      <Input value={form.proof_url} onChange={(e) => setForm({ ...form, proof_url: e.target.value })} placeholder="https://..." />
                     </div>
-                    <Button type="submit" disabled={addAchievement.isPending || !newAchievement.title || !newAchievement.category_id} className="w-full gold-gradient text-primary-foreground">
-                      {addAchievement.isPending ? 'Adding...' : 'Add Achievement'}
+                    <Button 
+                      type="submit" 
+                      disabled={addAchievement.isPending || updateAchievement.isPending || !form.title || !form.category_id} 
+                      className="w-full gold-gradient text-primary-foreground"
+                    >
+                      {addAchievement.isPending || updateAchievement.isPending ? 'Saving...' : (editingAchievement ? 'Update Achievement' : 'Add Achievement')}
                     </Button>
                   </form>
                 </DialogContent>
@@ -267,6 +371,7 @@ export default function Dashboard() {
                     proofUrl={achievement.proof_url || undefined}
                     status={achievement.status}
                     showActions
+                    onEdit={() => handleEdit(achievement)}
                     onDelete={() => deleteAchievement.mutate(achievement.id)}
                   />
                 ))
