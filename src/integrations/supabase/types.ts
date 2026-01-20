@@ -274,6 +274,10 @@ export type Database = {
     }
     Functions: {
       calculate_star_rating: { Args: { p_user_id: string }; Returns: number }
+      check_and_award_badges: {
+        Args: { p_user_id: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

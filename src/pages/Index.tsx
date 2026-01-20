@@ -1,26 +1,99 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, Trophy, Users, Award, Zap } from 'lucide-react';
+import { ArrowRight, Star, Trophy, Users, Award, Zap, Calendar, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/StarRating';
 import { LeaderboardCard } from '@/components/LeaderboardCard';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+type TimeFilter = 'all' | 'month' | 'year';
 
 export default function Index() {
   const { user } = useAuth();
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
-  const { data: topUsers } = useQuery({
-    queryKey: ['leaderboard-top5'],
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, full_name, avatar_url, star_rating, total_achievements')
-        .order('star_rating', { ascending: false })
-        .limit(5);
+      const { data, error } = await supabase.from('categories').select('*');
       if (error) throw error;
       return data;
+    },
+  });
+
+  const { data: topUsers } = useQuery({
+    queryKey: ['leaderboard', timeFilter, categoryFilter],
+    queryFn: async () => {
+      // For filtered leaderboard, we need to calculate on client
+      // In production, this would be a database function
+      if (timeFilter === 'all' && categoryFilter === 'all') {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, full_name, avatar_url, star_rating, total_achievements, user_code')
+          .order('star_rating', { ascending: false })
+          .limit(10);
+        if (error) throw error;
+        return data;
+      }
+
+      // Get achievements with filters
+      let query = supabase
+        .from('achievements')
+        .select('user_id, category_id, status, created_at')
+        .eq('status', 'approved');
+
+      if (timeFilter === 'month') {
+        const monthAgo = new Date();
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        query = query.gte('created_at', monthAgo.toISOString());
+      } else if (timeFilter === 'year') {
+        const yearAgo = new Date();
+        yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+        query = query.gte('created_at', yearAgo.toISOString());
+      }
+
+      if (categoryFilter !== 'all') {
+        query = query.eq('category_id', categoryFilter);
+      }
+
+      const { data: achievements, error: achError } = await query;
+      if (achError) throw achError;
+
+      // Count achievements per user
+      const userCounts: Record<string, number> = {};
+      achievements?.forEach((a) => {
+        userCounts[a.user_id] = (userCounts[a.user_id] || 0) + 1;
+      });
+
+      // Get top user IDs
+      const topUserIds = Object.entries(userCounts)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10)
+        .map(([id]) => id);
+
+      if (topUserIds.length === 0) return [];
+
+      // Fetch profiles for top users
+      const { data: profiles, error: profError } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, star_rating, total_achievements, user_code')
+        .in('id', topUserIds);
+      if (profError) throw profError;
+
+      // Sort by filtered achievement count
+      return profiles?.sort((a, b) => (userCounts[b.id] || 0) - (userCounts[a.id] || 0)) || [];
     },
   });
 
@@ -37,6 +110,7 @@ export default function Index() {
           </Link>
           
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {user ? (
               <Link to="/dashboard">
                 <Button className="gold-gradient text-primary-foreground font-semibold">
@@ -141,17 +215,49 @@ export default function Index() {
             <h2 className="text-3xl font-bold">Leaderboard</h2>
           </div>
 
+          {/* Filters */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-muted-foreground" />
+              <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as TimeFilter)}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="month">This Month</SelectItem>
+                  <SelectItem value="year">This Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-muted-foreground" />
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="All Categories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories?.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           <div className="space-y-3">
             {topUsers && topUsers.length > 0 ? (
               topUsers.map((user, index) => (
-                <LeaderboardCard
-                  key={user.id}
-                  rank={index + 1}
-                  name={user.full_name}
-                  avatarUrl={user.avatar_url || undefined}
-                  starRating={Number(user.star_rating)}
-                  achievementCount={user.total_achievements}
-                />
+                <Link key={user.id} to={`/profile/${user.user_code}`}>
+                  <LeaderboardCard
+                    rank={index + 1}
+                    name={user.full_name}
+                    avatarUrl={user.avatar_url || undefined}
+                    starRating={Number(user.star_rating)}
+                    achievementCount={user.total_achievements}
+                  />
+                </Link>
               ))
             ) : (
               <div className="glass-card p-8 text-center">
