@@ -196,7 +196,7 @@ export function Footer() {
           {[...Array(4)].map((_, i) => (
             <span 
               key={i} 
-              className="text-[clamp(3rem,10vw,8rem)] font-extrabold tracking-tighter text-muted/20 mx-8"
+              className="text-[clamp(3rem,10vw,8rem)] font-extrabold tracking-tighter text-foreground/10 mx-8"
             >
               LOCATRACK • ACHIEVEMENTS • EXCELLENCE • VERIFIED •
             </span>
