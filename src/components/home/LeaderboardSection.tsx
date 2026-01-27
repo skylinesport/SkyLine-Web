@@ -15,6 +15,33 @@ import {
 
 type TimeFilter = 'all' | 'month' | 'year';
 
+// Smooth easing curve - typed as tuple
+const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
+
+// Staggered container
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const rowVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: smoothEase,
+    },
+  },
+};
+
 export function LeaderboardSection() {
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -89,34 +116,54 @@ export function LeaderboardSection() {
     <section id="leaderboard" className="py-24 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto max-w-5xl">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12"
-        >
-          <div className="flex items-baseline gap-4 mb-4">
+        <div className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: smoothEase }}
+            className="flex items-baseline gap-4 mb-4"
+          >
             <span className="text-muted-foreground text-sm font-medium">01</span>
             <span className="text-muted-foreground text-sm">/Showcase</span>
-          </div>
-          <div className="flex items-baseline gap-4 mb-2">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: smoothEase, delay: 0.1 }}
+            className="flex items-baseline gap-4 mb-2"
+          >
             <span className="text-muted-foreground text-sm">2024-2025</span>
+          </motion.div>
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: '100%' }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: smoothEase }}
+              className="text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.9] tracking-tighter"
+            >
+              Featured<span className="gold-text">achievers</span>
+            </motion.h2>
           </div>
-          <h2 className="text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.9] tracking-tighter">
-            Featured<span className="gold-text">achievers</span>
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-xl text-lg">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, ease: smoothEase, delay: 0.3 }}
+            className="text-muted-foreground mt-4 max-w-xl text-lg"
+          >
             A collection of top performers that showcase excellence in non-academic achievements.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Filters */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, ease: smoothEase, delay: 0.2 }}
           className="flex flex-wrap items-center gap-4 mb-8"
         >
           <div className="flex items-center gap-2">
@@ -149,16 +196,16 @@ export function LeaderboardSection() {
         </motion.div>
 
         {/* Leaderboard Grid */}
-        <div className="grid gap-4">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+          className="grid gap-4"
+        >
           {topUsers && topUsers.length > 0 ? (
             topUsers.map((user, index) => (
-              <motion.div
-                key={user.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-              >
+              <motion.div key={user.id} variants={rowVariants}>
                 <Link to={`/profile/${user.user_code}`}>
                   <LeaderboardRow
                     rank={index + 1}
@@ -181,7 +228,7 @@ export function LeaderboardSection() {
               </p>
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -220,7 +267,7 @@ function LeaderboardRow({ rank, name, avatarUrl, starRating, achievementCount }:
 
       {/* Name */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-xl font-bold truncate group-hover:gold-text transition-colors">
+        <h3 className="text-xl font-bold truncate group-hover:gold-text transition-colors duration-300">
           {name}
         </h3>
         <p className="text-muted-foreground text-sm">
@@ -234,7 +281,7 @@ function LeaderboardRow({ rank, name, avatarUrl, starRating, achievementCount }:
       </div>
 
       {/* Arrow */}
-      <div className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all">
+      <div className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300">
         →
       </div>
     </div>
