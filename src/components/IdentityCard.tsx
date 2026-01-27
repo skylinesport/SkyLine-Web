@@ -14,13 +14,8 @@ interface IdentityCardProps {
 export function IdentityCard({ name, userCode, starRating, totalAchievements }: IdentityCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Format user code like a card number (groups of 4)
-  const formatUserCode = (code: string) => {
-    const paddedCode = code.padStart(16, '0');
-    return paddedCode.match(/.{1,4}/g)?.join(' ') || code;
-  };
-
-  const currentYear = new Date().getFullYear();
+  const currentDate = new Date();
+  const memberSince = `${currentDate.toLocaleString('en-US', { month: 'short' }).toUpperCase()} ${currentDate.getFullYear()}`;
 
   const handleDownload = async () => {
     if (!cardRef.current) return;
@@ -115,29 +110,8 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
             </div>
           </div>
 
-          {/* Chip */}
-          <div 
-            className="w-12 h-9 rounded-md mt-2"
-            style={{
-              background: 'linear-gradient(135deg, #d4af37 0%, #f5d061 30%, #d4af37 60%, #b8941f 100%)',
-              boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2)',
-            }}
-          >
-            <div className="w-full h-full grid grid-cols-3 grid-rows-2 gap-[1px] p-[2px]">
-              {[...Array(6)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className="rounded-[1px]"
-                  style={{
-                    background: 'linear-gradient(135deg, #c9a227 0%, #dfc35a 100%)',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-
           {/* Member ID */}
-          <div className="mt-4">
+          <div className="mt-6">
             <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
               Member ID
             </p>
@@ -148,17 +122,14 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 textShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
               }}
             >
-              {formatUserCode(userCode)}
+              {userCode}
             </p>
           </div>
 
           {/* Bottom Row */}
           <div className="flex items-end justify-between mt-auto pt-2">
-            {/* Card Holder */}
+            {/* Name */}
             <div>
-              <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
-                Card Holder
-              </p>
               <p className="text-sm font-semibold tracking-wide uppercase text-foreground">
                 {name}
               </p>
@@ -182,11 +153,11 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
-                  Since
-                </p>
-                <p className="text-sm font-bold text-foreground">
-                  {currentYear}
+              <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+                Since
+              </p>
+              <p className="text-sm font-bold text-foreground">
+                {memberSince}
                 </p>
               </div>
             </div>
