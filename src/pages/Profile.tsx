@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Trophy, Award, Share2, Copy, Check } from 'lucide-react';
+import { Trophy, Award, Share2, Copy, Check } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Badge } from '@/components/Badge';
 import { IdentityCard } from '@/components/IdentityCard';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import logo from '@/assets/logo.png';
 
 export default function Profile() {
   const { userCode } = useParams<{ userCode: string }>();
@@ -92,9 +93,7 @@ export default function Profile() {
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
-              <Star className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
             <span className="text-xl font-bold gold-text">SkyLine</span>
           </Link>
           
