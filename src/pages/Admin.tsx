@@ -47,7 +47,7 @@ export default function Admin() {
             <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
               <Star className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold gold-text">LocaTrack</span>
+            <span className="text-xl font-bold gold-text">SkyLine</span>
             <span className="px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium ml-2">
               Admin
             </span>
