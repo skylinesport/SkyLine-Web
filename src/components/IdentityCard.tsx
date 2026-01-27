@@ -1,8 +1,7 @@
 import { useRef } from 'react';
-import { Download, Star } from 'lucide-react';
+import { Download, Crown, Wifi } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { Button } from '@/components/ui/button';
-import { StarRating } from '@/components/StarRating';
 import { toast } from 'sonner';
 
 interface IdentityCardProps {
@@ -15,13 +14,21 @@ interface IdentityCardProps {
 export function IdentityCard({ name, userCode, starRating, totalAchievements }: IdentityCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  // Format user code like a card number (groups of 4)
+  const formatUserCode = (code: string) => {
+    const paddedCode = code.padStart(16, '0');
+    return paddedCode.match(/.{1,4}/g)?.join(' ') || code;
+  };
+
+  const currentYear = new Date().getFullYear();
+
   const handleDownload = async () => {
     if (!cardRef.current) return;
     
     try {
       const dataUrl = await toPng(cardRef.current, {
         quality: 1,
-        pixelRatio: 2,
+        pixelRatio: 3,
         backgroundColor: '#0a0a1a',
       });
       
@@ -39,56 +46,149 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
     <div className="space-y-4">
       <div
         ref={cardRef}
-        className="relative w-full max-w-md mx-auto aspect-[1.6/1] rounded-2xl overflow-hidden"
+        className="relative w-full max-w-md mx-auto overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, hsl(var(--card)) 0%, hsl(220 30% 8%) 50%, hsl(var(--card)) 100%)',
-          border: '2px solid hsl(var(--primary) / 0.3)',
+          aspectRatio: '1.586/1', // Standard card ratio
+          borderRadius: '16px',
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.1)',
         }}
       >
-        {/* Background Pattern */}
+        {/* Diagonal Stripe Pattern */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.08]"
           style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary)) 1px, transparent 0)`,
-            backgroundSize: '24px 24px',
+            backgroundImage: `repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 10px,
+              rgba(255,255,255,0.1) 10px,
+              rgba(255,255,255,0.1) 11px
+            )`,
           }}
         />
         
-        {/* Gold Gradient Border Effect */}
-        <div className="absolute top-0 left-0 right-0 h-1 gold-gradient" />
-        <div className="absolute bottom-0 left-0 right-0 h-1 gold-gradient" />
-        
+        {/* Top Border Glow */}
+        <div 
+          className="absolute top-0 left-0 right-0 h-[2px]"
+          style={{
+            background: 'linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)',
+          }}
+        />
+
         {/* Content */}
         <div className="relative h-full p-6 flex flex-col justify-between">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
-                <Star className="w-5 h-5 text-primary-foreground" />
+          {/* Header Row */}
+          <div className="flex items-start justify-between">
+            {/* Brand Logo */}
+            <div className="flex items-center gap-3">
+              <div 
+                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(210 100% 50%) 100%)',
+                  boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
+                }}
+              >
+                <Crown className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold gold-text">SkyLine</span>
+              <div>
+                <h3 
+                  className="text-xl font-bold tracking-wide"
+                  style={{ 
+                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, #60a5fa 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  SKYLINE
+                </h3>
+                <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                  Elite Member
+                </p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-muted-foreground">Member ID</p>
-              <p className="text-sm font-mono font-bold text-primary">{userCode}</p>
+            
+            {/* NFC Icon */}
+            <div className="flex flex-col items-center gap-1">
+              <Wifi className="w-6 h-6 text-muted-foreground rotate-90" />
+              <span className="text-[8px] text-muted-foreground tracking-wider">NFC</span>
             </div>
           </div>
-          
-          {/* Main Info */}
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-2">{name}</h2>
-            <StarRating rating={starRating} size="lg" />
+
+          {/* Chip */}
+          <div 
+            className="w-12 h-9 rounded-md mt-2"
+            style={{
+              background: 'linear-gradient(135deg, #d4af37 0%, #f5d061 30%, #d4af37 60%, #b8941f 100%)',
+              boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.2)',
+            }}
+          >
+            <div className="w-full h-full grid grid-cols-3 grid-rows-2 gap-[1px] p-[2px]">
+              {[...Array(6)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="rounded-[1px]"
+                  style={{
+                    background: 'linear-gradient(135deg, #c9a227 0%, #dfc35a 100%)',
+                  }}
+                />
+              ))}
+            </div>
           </div>
-          
-          {/* Footer */}
-          <div className="flex items-center justify-between">
+
+          {/* Member ID */}
+          <div className="mt-4">
+            <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+              Member ID
+            </p>
+            <p 
+              className="text-xl font-mono font-semibold tracking-[0.1em]"
+              style={{ 
+                color: 'hsl(var(--foreground))',
+                textShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
+              }}
+            >
+              {formatUserCode(userCode)}
+            </p>
+          </div>
+
+          {/* Bottom Row */}
+          <div className="flex items-end justify-between mt-auto pt-2">
+            {/* Card Holder */}
             <div>
-              <p className="text-xs text-muted-foreground">Total Achievements</p>
-              <p className="text-lg font-bold">{totalAchievements}</p>
+              <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+                Card Holder
+              </p>
+              <p className="text-sm font-semibold tracking-wide uppercase text-foreground">
+                {name}
+              </p>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-muted-foreground">Star Rating</p>
-              <p className="text-lg font-bold gold-text">{starRating.toFixed(1)} / 7.0</p>
+
+            {/* Stats */}
+            <div className="flex gap-6">
+              <div className="text-right">
+                <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+                  Rating
+                </p>
+                <p 
+                  className="text-sm font-bold"
+                  style={{ 
+                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, #60a5fa 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {starRating.toFixed(1)}★
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+                  Since
+                </p>
+                <p className="text-sm font-bold text-foreground">
+                  {currentYear}
+                </p>
+              </div>
             </div>
           </div>
         </div>
