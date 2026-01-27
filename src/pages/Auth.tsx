@@ -23,7 +23,7 @@ const signInSchema = z.object({
 export default function Auth() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, isAdmin } = useAuth();
   
   const [isSignUp, setIsSignUp] = useState(searchParams.get('mode') === 'signup');
   const [loading, setLoading] = useState(false);
@@ -36,9 +36,10 @@ export default function Auth() {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      // Redirect admins to admin panel, regular users to dashboard
+      navigate(isAdmin ? '/admin' : '/dashboard');
     }
-  }, [user, navigate]);
+  }, [user, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ export default function Auth() {
           }
         } else {
           toast.success('Account created successfully!');
-          navigate('/dashboard');
+          // Navigation will be handled by useEffect after isAdmin is determined
         }
       } else {
         const result = signInSchema.safeParse(formData);
@@ -86,6 +87,7 @@ export default function Auth() {
           toast.error('Invalid email or password');
         } else {
           toast.success('Welcome back!');
+          // Navigation will be handled by useEffect after isAdmin is determined
           navigate('/dashboard');
         }
       }
