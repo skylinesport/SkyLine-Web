@@ -143,11 +143,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 </p>
                 <p 
                   className="text-sm font-bold"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
+                  style={{ color: '#60a5fa' }}
                 >
                   {starRating.toFixed(1)}★
                 </p>
