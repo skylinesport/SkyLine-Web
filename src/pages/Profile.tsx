@@ -95,7 +95,7 @@ export default function Profile() {
             <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
               <Star className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold gold-text">LocaTrack</span>
+            <span className="text-xl font-bold gold-text">SkyLine</span>
           </Link>
           
           <Button variant="outline" size="sm" onClick={handleCopyLink}>
@@ -226,7 +226,7 @@ export default function Profile() {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-border/50 mt-12">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>© 2024 LocaTrack. Celebrate your achievements.</p>
+          <p>© 2024 SkyLine. Celebrate your achievements.</p>
         </div>
       </footer>
     </div>

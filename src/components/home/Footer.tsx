@@ -91,11 +91,11 @@ export function Footer() {
           className="mb-20"
         >
           <a 
-            href="mailto:hello@locatrack.app" 
+            href="mailto:hello@skyline.app" 
             className="group inline-flex items-center gap-3 text-lg md:text-xl text-muted-foreground hover:text-foreground transition-colors duration-300"
           >
             <span className="relative">
-              hello@locatrack.app
+              hello@skyline.app
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500" />
             </span>
             <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
@@ -169,10 +169,10 @@ export function Footer() {
             className="md:text-right"
           >
             <Link to="/" className="inline-block text-2xl font-extrabold tracking-tighter mb-4">
-              LOCA<span className="gold-text">TRACK</span>
+              SKY<span className="gold-text">LINE</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} LocaTrack
+              © {new Date().getFullYear()} SkyLine
             </p>
             <p className="text-sm text-muted-foreground">
               All rights reserved
@@ -198,7 +198,7 @@ export function Footer() {
               key={i} 
               className="text-[clamp(3rem,10vw,8rem)] font-extrabold tracking-tighter text-foreground/10 mx-8"
             >
-              LOCATRACK • ACHIEVEMENTS • EXCELLENCE • VERIFIED •
+              SKYLINE • ACHIEVEMENTS • EXCELLENCE • VERIFIED •
             </span>
           ))}
         </motion.div>

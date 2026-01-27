@@ -113,7 +113,7 @@ export default function Auth() {
             <div className="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center">
               <Star className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="text-2xl font-bold gold-text">LocaTrack</span>
+            <span className="text-2xl font-bold gold-text">SkyLine</span>
           </div>
 
           <h1 className="text-2xl font-bold mb-2">

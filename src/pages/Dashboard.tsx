@@ -198,7 +198,7 @@ export default function Dashboard() {
             <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
               <Star className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold gold-text">LocaTrack</span>
+            <span className="text-xl font-bold gold-text">SkyLine</span>
           </Link>
           
           <div className="flex items-center gap-2">

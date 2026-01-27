@@ -34,8 +34,8 @@ export function Navbar() {
           transition={{ duration: 0.6, ease: smoothEase, delay: 0.1 }}
           className="absolute left-1/2 -translate-x-1/2"
         >
-          <Link to="/" className="font-bold text-sm tracking-wider">
-            LCTRK®
+        <Link to="/" className="font-bold text-sm tracking-wider">
+            SKYLINE®
           </Link>
         </motion.div>
 

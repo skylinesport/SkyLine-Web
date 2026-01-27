@@ -26,7 +26,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
       });
       
       const link = document.createElement('a');
-      link.download = `locatrack-${userCode}.png`;
+      link.download = `skyline-${userCode}.png`;
       link.href = dataUrl;
       link.click();
       toast.success('Identity card downloaded!');
@@ -66,7 +66,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
               <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
                 <Star className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold gold-text">LocaTrack</span>
+              <span className="text-lg font-bold gold-text">SkyLine</span>
             </div>
             <div className="text-right">
               <p className="text-xs text-muted-foreground">Member ID</p>

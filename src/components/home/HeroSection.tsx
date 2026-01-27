@@ -47,7 +47,7 @@ export function HeroSection() {
                 animate={{ y: 0 }}
                 transition={{ ...smoothTransition, delay: 0 }}
               >
-                LOCA
+                SKY
               </motion.span>
             </span>
             <span className="block overflow-hidden">
@@ -57,7 +57,7 @@ export function HeroSection() {
                 animate={{ y: 0 }}
                 transition={{ ...smoothTransition, delay: 0.1 }}
               >
-                TRACK
+                LINE
               </motion.span>
             </span>
           </h1>

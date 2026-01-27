@@ -92,7 +92,7 @@ export function FeaturesSection() {
               transition={{ duration: 1, ease: smoothEase }}
               className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tighter"
             >
-              Why<span className="gold-text">LocaTrack</span>?
+              Why<span className="gold-text">SkyLine</span>?
             </motion.h2>
           </div>
         </div>
