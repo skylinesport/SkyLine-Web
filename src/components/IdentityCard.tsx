@@ -97,7 +97,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 >
                   SKYLINE
                 </h3>
-                <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+                <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Elite Member
                 </p>
               </div>
@@ -105,20 +105,20 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
             
             {/* NFC Icon */}
             <div className="flex flex-col items-center gap-1">
-              <Wifi className="w-6 h-6 text-muted-foreground rotate-90" />
-              <span className="text-[8px] text-muted-foreground tracking-wider">NFC</span>
+              <Wifi className="w-6 h-6 rotate-90" style={{ color: 'rgba(255,255,255,0.5)' }} />
+              <span className="text-[8px] tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>NFC</span>
             </div>
           </div>
 
           {/* Member ID */}
           <div className="mt-6">
-            <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+            <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Member ID
             </p>
             <p 
               className="text-xl font-mono font-semibold tracking-[0.1em]"
               style={{ 
-                color: 'hsl(var(--foreground))',
+                color: '#ffffff',
                 textShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
               }}
             >
@@ -130,7 +130,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
           <div className="flex items-end justify-between mt-auto pt-2">
             {/* Name */}
             <div>
-              <p className="text-sm font-semibold tracking-wide uppercase text-foreground">
+              <p className="text-sm font-semibold tracking-wide uppercase" style={{ color: '#ffffff' }}>
                 {name}
               </p>
             </div>
@@ -138,13 +138,13 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
             {/* Stats */}
             <div className="flex gap-6">
               <div className="text-right">
-                <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
+                <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Rating
                 </p>
                 <p 
                   className="text-sm font-bold"
                   style={{ 
-                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, #60a5fa 100%)',
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                   }}
@@ -153,11 +153,11 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 </p>
               </div>
               <div className="text-right">
-              <p className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">
-                Since
-              </p>
-              <p className="text-sm font-bold text-foreground">
-                {memberSince}
+                <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  Since
+                </p>
+                <p className="text-sm font-bold" style={{ color: '#ffffff' }}>
+                  {memberSince}
                 </p>
               </div>
             </div>
