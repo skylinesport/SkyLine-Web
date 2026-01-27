@@ -1,36 +1,206 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
+
+// Smooth easing curve matching the site's motion design
+const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
+
+const textRevealVariants = {
+  hidden: { y: '100%' },
+  visible: (delay: number) => ({
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: smoothEase,
+      delay,
+    },
+  }),
+};
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: smoothEase,
+      delay,
+    },
+  }),
+};
+
+const socialLinks = [
+  { name: 'Instagram', href: '#' },
+  { name: 'LinkedIn', href: '#' },
+  { name: 'Twitter', href: '#' },
+];
+
+const navLinks = [
+  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Profile', href: '/profile' },
+  { name: 'Sign In', href: '/auth' },
+];
 
 export function Footer() {
   return (
-    <footer className="py-16 px-4 md:px-8 lg:px-16 border-t border-border">
-      <div className="container mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center justify-between gap-8"
-        >
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-extrabold tracking-tighter">
-            LOCA<span className="gold-text">TRACK</span>
-          </Link>
-
-          {/* Links */}
-          <div className="flex items-center gap-8">
-            <Link to="/auth" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Sign In
-            </Link>
-            <Link to="/auth?mode=signup" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Get Started
-            </Link>
+    <footer className="relative bg-background border-t border-border">
+      {/* Main CTA Section */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-24 pb-16">
+        {/* Large CTA Text with reveal animation */}
+        <div className="mb-16">
+          <div className="overflow-hidden">
+            <motion.p
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              custom={0}
+              variants={textRevealVariants}
+              className="text-muted-foreground text-sm md:text-base mb-4"
+            >
+              Ready to showcase your achievements?
+            </motion.p>
           </div>
+          
+          <Link to="/auth?mode=signup" className="group inline-block">
+            <div className="overflow-hidden">
+              <motion.h2
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                custom={0.1}
+                variants={textRevealVariants}
+                className="text-[clamp(2.5rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-tighter"
+              >
+                <span className="inline-flex items-center gap-4 group-hover:gold-text transition-colors duration-500">
+                  Let's Get Started
+                  <ArrowUpRight className="w-[clamp(1.5rem,4vw,3rem)] h-[clamp(1.5rem,4vw,3rem)] group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
+                </span>
+              </motion.h2>
+            </div>
+          </Link>
+        </div>
 
-          {/* Copyright */}
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} LocaTrack. All rights reserved.
-          </p>
+        {/* Email CTA */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          custom={0.2}
+          variants={fadeUpVariants}
+          className="mb-20"
+        >
+          <a 
+            href="mailto:hello@locatrack.app" 
+            className="group inline-flex items-center gap-3 text-lg md:text-xl text-muted-foreground hover:text-foreground transition-colors duration-300"
+          >
+            <span className="relative">
+              hello@locatrack.app
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500" />
+            </span>
+            <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+          </a>
+        </motion.div>
+
+        {/* Bottom Section */}
+        <div className="grid md:grid-cols-3 gap-12 pt-12 border-t border-border">
+          {/* Navigation */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            custom={0.3}
+            variants={fadeUpVariants}
+          >
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Navigation</p>
+            <ul className="space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    to={link.href} 
+                    className="group inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
+                  >
+                    <span className="relative">
+                      {link.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-300" />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Socials */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            custom={0.4}
+            variants={fadeUpVariants}
+          >
+            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Connect</p>
+            <ul className="space-y-3">
+              {socialLinks.map((link) => (
+                <li key={link.name}>
+                  <a 
+                    href={link.href} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
+                  >
+                    <span className="relative">
+                      {link.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-300" />
+                    </span>
+                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Logo & Copyright */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            custom={0.5}
+            variants={fadeUpVariants}
+            className="md:text-right"
+          >
+            <Link to="/" className="inline-block text-2xl font-extrabold tracking-tighter mb-4">
+              LOCA<span className="gold-text">TRACK</span>
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} LocaTrack
+            </p>
+            <p className="text-sm text-muted-foreground">
+              All rights reserved
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Large Background Text */}
+      <div className="overflow-hidden border-t border-border">
+        <motion.div
+          initial={{ x: '0%' }}
+          animate={{ x: '-50%' }}
+          transition={{
+            duration: 20,
+            ease: 'linear',
+            repeat: Infinity,
+          }}
+          className="flex whitespace-nowrap py-6"
+        >
+          {[...Array(4)].map((_, i) => (
+            <span 
+              key={i} 
+              className="text-[clamp(3rem,10vw,8rem)] font-extrabold tracking-tighter text-muted/20 mx-8"
+            >
+              LOCATRACK • ACHIEVEMENTS • EXCELLENCE • VERIFIED •
+            </span>
+          ))}
         </motion.div>
       </div>
     </footer>
