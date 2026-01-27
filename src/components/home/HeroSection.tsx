@@ -1,4 +1,5 @@
-import { motion, type Transition } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, type Transition } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
 
@@ -10,12 +11,34 @@ const smoothTransition: Transition = {
 
 export function HeroSection() {
   const { user } = useAuth();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Parallax transforms
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const cardY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section className="min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-24">
-      <div className="container mx-auto">
-        {/* Massive Typography with clip reveal */}
-        <div className="mb-12 overflow-hidden">
+    <section ref={sectionRef} className="relative min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-24 overflow-hidden">
+      {/* Parallax Background Elements */}
+      <motion.div 
+        style={{ y: backgroundY }}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-40 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+      </motion.div>
+
+      <div className="container mx-auto relative z-10">
+        {/* Massive Typography with clip reveal and parallax */}
+        <motion.div style={{ y: textY, opacity }} className="mb-12 overflow-hidden">
           <h1 className="text-[clamp(4rem,15vw,14rem)] font-extrabold leading-[0.85] tracking-tighter uppercase">
             <span className="block overflow-hidden">
               <motion.span
@@ -38,7 +61,7 @@ export function HeroSection() {
               </motion.span>
             </span>
           </h1>
-        </div>
+        </motion.div>
 
         {/* Navigation Bar */}
         <motion.div
@@ -115,10 +138,11 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Featured Achievement Card */}
+          {/* Featured Achievement Card with Parallax */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.98, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
+            style={{ y: cardY }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.8 }}
           >
             <Link to={user ? "/dashboard" : "/auth?mode=signup"} className="block group">
@@ -144,14 +168,34 @@ export function HeroSection() {
                     </div>
                   </div>
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-primary/30 rounded-full blur-2xl" />
+                {/* Decorative elements with enhanced parallax */}
+                <motion.div 
+                  style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '-20%']) }}
+                  className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" 
+                />
+                <motion.div 
+                  style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '-30%']) }}
+                  className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-primary/30 rounded-full blur-2xl" 
+                />
               </div>
             </Link>
           </motion.div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        style={{ opacity }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-2"
+        >
+          <motion.div className="w-1 h-2 bg-muted-foreground/50 rounded-full" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
