@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Shield, Copy } from 'lucide-react';
+import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Copy } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
@@ -30,13 +30,20 @@ interface AchievementForm {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAchievement, setEditingAchievement] = useState<string | null>(null);
   const [form, setForm] = useState<AchievementForm>({
     title: '', description: '', category_id: '', achievement_date: '', proof_url: ''
   });
+
+  // Redirect admins to admin panel
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/admin');
+    }
+  }, [isAdmin, navigate]);
 
   const { data: profile } = useQuery({
     queryKey: ['profile', user?.id],
@@ -52,15 +59,6 @@ export default function Dashboard() {
     enabled: !!user?.id,
   });
 
-  const { data: isAdmin } = useQuery({
-    queryKey: ['is-admin', user?.id],
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc('is_admin', { _user_id: user?.id });
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!user?.id,
-  });
 
   const { data: achievements } = useQuery({
     queryKey: ['achievements', user?.id],
@@ -206,13 +204,6 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <NotificationBell />
-            {isAdmin && (
-              <Link to="/admin">
-                <Button variant="ghost" size="icon" className="text-destructive">
-                  <Shield className="w-5 h-5" />
-                </Button>
-              </Link>
-            )}
             <Link to={`/profile/${profile?.user_code}`}>
               <Button variant="ghost" size="icon"><User className="w-5 h-5" /></Button>
             </Link>
