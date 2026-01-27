@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, type Transition } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/lib/auth';
-import { CursorSpotlight } from '@/components/CursorSpotlight';
 
 // Smooth easing curve like arestov.design - using cubicBezier
 const smoothTransition: Transition = {
@@ -27,9 +26,6 @@ export function HeroSection() {
 
   return (
     <section ref={sectionRef} className="relative min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-24 overflow-hidden">
-      {/* Cursor Spotlight Effect */}
-      <CursorSpotlight containerRef={sectionRef} size={500} opacity={0.12} />
-
       {/* Parallax Background Elements */}
       <motion.div 
         style={{ y: backgroundY }}
