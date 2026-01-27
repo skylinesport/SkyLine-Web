@@ -1,8 +1,9 @@
 import { useRef } from 'react';
-import { Download, Crown, Wifi } from 'lucide-react';
+import { Download, Wifi } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import logo from '@/assets/logo.png';
 
 interface IdentityCardProps {
   name: string;
@@ -77,26 +78,12 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
           <div className="flex items-start justify-between">
             {/* Brand Logo */}
             <div className="flex items-center gap-3">
-              <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(210 100% 50%) 100%)',
-                  boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)',
-                }}
-              >
-                <Crown className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src={logo} 
+                alt="SkyLine" 
+                className="h-10 w-auto invert"
+              />
               <div>
-                <h3 
-                  className="text-xl font-bold tracking-wide"
-                  style={{ 
-                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, #60a5fa 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  SKYLINE
-                </h3>
                 <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Elite Member
                 </p>
