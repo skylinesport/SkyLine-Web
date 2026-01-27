@@ -92,9 +92,8 @@ export default function Profile() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/">
             <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
-            <span className="text-xl font-bold gold-text">SkyLine</span>
           </Link>
           
           <Button variant="outline" size="sm" onClick={handleCopyLink}>
