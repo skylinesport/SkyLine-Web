@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
+import logo from '@/assets/logo.png';
 
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 
@@ -34,8 +35,8 @@ export function Navbar() {
           transition={{ duration: 0.6, ease: smoothEase, delay: 0.1 }}
           className="absolute left-1/2 -translate-x-1/2"
         >
-        <Link to="/" className="font-bold text-sm tracking-wider">
-            SKYLINE®
+          <Link to="/">
+            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
           </Link>
         </motion.div>
 

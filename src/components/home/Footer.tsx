@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 // Smooth easing curve matching the site's motion design
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
@@ -168,8 +169,8 @@ export function Footer() {
             variants={fadeUpVariants}
             className="md:text-right"
           >
-            <Link to="/" className="inline-block text-2xl font-extrabold tracking-tighter mb-4">
-              SKY<span className="gold-text">LINE</span>
+            <Link to="/" className="inline-block mb-4">
+              <img src={logo} alt="SkyLine" className="h-10 w-auto dark:invert" />
             </Link>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} SkyLine
