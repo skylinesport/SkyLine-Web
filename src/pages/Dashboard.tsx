@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Copy } from 'lucide-react';
+import logo from '@/assets/logo.png';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
@@ -194,11 +195,8 @@ export default function Dashboard() {
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
-              <Star className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold gold-text">SkyLine</span>
+          <Link to="/">
+            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
           </Link>
           
           <div className="flex items-center gap-2">

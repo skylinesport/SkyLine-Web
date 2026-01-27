@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import logo from '@/assets/logo.png';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -109,11 +110,8 @@ export default function Auth() {
         </Link>
 
         <div className="glass-card-elevated p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center">
-              <Star className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-2xl font-bold gold-text">SkyLine</span>
+          <div className="mb-6">
+            <img src={logo} alt="SkyLine" className="h-10 w-auto dark:invert" />
           </div>
 
           <h1 className="text-2xl font-bold mb-2">

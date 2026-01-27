@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Shield, Users, Trophy, Tag, Award, LogOut } from 'lucide-react';
+import { Shield, Users, Trophy, Tag, Award, LogOut } from 'lucide-react';
+import logo from '@/assets/logo.png';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
@@ -44,11 +45,8 @@ export default function Admin() {
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
-              <Star className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold gold-text">SkyLine</span>
-            <span className="px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium ml-2">
+            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
+            <span className="px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium">
               Admin
             </span>
           </Link>
