@@ -261,6 +261,10 @@ export type Database = {
           full_name: string
           id: string
           interests: string[] | null
+          is_restricted: boolean
+          restricted_at: string | null
+          restricted_by: string | null
+          restriction_reason: string | null
           skills: string[] | null
           star_rating: number
           theme_color: string | null
@@ -279,6 +283,10 @@ export type Database = {
           full_name: string
           id: string
           interests?: string[] | null
+          is_restricted?: boolean
+          restricted_at?: string | null
+          restricted_by?: string | null
+          restriction_reason?: string | null
           skills?: string[] | null
           star_rating?: number
           theme_color?: string | null
@@ -297,6 +305,10 @@ export type Database = {
           full_name?: string
           id?: string
           interests?: string[] | null
+          is_restricted?: boolean
+          restricted_at?: string | null
+          restricted_by?: string | null
+          restriction_reason?: string | null
           skills?: string[] | null
           star_rating?: number
           theme_color?: string | null
@@ -382,6 +394,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
+      is_user_restricted: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       achievement_status: "pending" | "approved" | "rejected"

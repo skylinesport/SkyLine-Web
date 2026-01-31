@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Copy } from 'lucide-react';
+import { Star, Plus, LogOut, User, Trophy, TrendingUp, Award, Copy, Ban } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -40,13 +40,12 @@ export default function Dashboard() {
     title: '', description: '', category_id: '', achievement_date: '', proof_url: ''
   });
 
-  // Redirect admins to admin panel
-  useEffect(() => {
-    if (isAdmin) {
-      navigate('/admin');
-    }
-  }, [isAdmin, navigate]);
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
+  // Fetch profile to check restriction status
   const { data: profile } = useQuery({
     queryKey: ['profile', user?.id],
     queryFn: async () => {
@@ -61,6 +60,12 @@ export default function Dashboard() {
     enabled: !!user?.id,
   });
 
+  // Redirect admins to admin panel
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/admin');
+    }
+  }, [isAdmin, navigate]);
 
   const { data: achievements } = useQuery({
     queryKey: ['achievements', user?.id],
@@ -156,11 +161,6 @@ export default function Dashboard() {
     },
   });
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
   const closeDialog = () => {
     setDialogOpen(false);
     setEditingAchievement(null);
@@ -187,6 +187,39 @@ export default function Dashboard() {
       addAchievement.mutate();
     }
   };
+
+  // Show restricted account message
+  if (profile?.is_restricted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass-card p-8 max-w-md text-center"
+        >
+          <div className="w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center mx-auto mb-4">
+            <Ban className="w-8 h-8 text-destructive" />
+          </div>
+          <h1 className="text-2xl font-bold mb-2">Account Restricted</h1>
+          <p className="text-muted-foreground mb-4">
+            Your account has been temporarily restricted by an administrator.
+          </p>
+          {profile.restriction_reason && (
+            <div className="bg-muted/50 rounded-lg p-4 mb-4 text-left">
+              <p className="text-sm font-medium mb-1">Reason:</p>
+              <p className="text-sm text-muted-foreground">{profile.restriction_reason}</p>
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground mb-6">
+            If you believe this is a mistake, please contact support.
+          </p>
+          <Button onClick={handleSignOut} variant="outline">
+            Sign Out
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
 
   const starRating = Number(profile?.star_rating || 0);
   const nextStar = Math.ceil(starRating) || 1;
