@@ -14,7 +14,7 @@ import { CategoryManager } from '@/components/admin/CategoryManager';
 import { BadgeManager } from '@/components/admin/BadgeManager';
 
 export default function Admin() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState('achievements');
 
   const { data: isAdmin, isLoading } = useQuery({
@@ -27,12 +27,24 @@ export default function Admin() {
     enabled: !!user?.id,
   });
 
-  if (isLoading) {
+  const handleSignOut = async () => {
+    await signOut();
+    // Navigate to home after signOut completes
+    window.location.href = '/';
+  };
+
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground">Checking permissions...</div>
       </div>
     );
+  }
+
+  // Only redirect to dashboard if user is logged in but not admin
+  // If user is null (logged out), redirect to home
+  if (!user) {
+    return <Navigate to="/" replace />;
   }
 
   if (!isAdmin) {
@@ -55,7 +67,7 @@ export default function Admin() {
             <Link to="/dashboard">
               <Button variant="ghost" size="sm">Dashboard</Button>
             </Link>
-            <Button variant="ghost" size="icon" onClick={signOut}>
+            <Button variant="ghost" size="icon" onClick={handleSignOut}>
               <LogOut className="w-5 h-5" />
             </Button>
           </div>
