@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { UserSearch } from '@/components/UserSearch';
 import { useAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/logo.png';
@@ -45,8 +46,9 @@ export function Navbar() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: smoothEase, delay: 0.3 }}
-          className="flex items-center gap-4"
+          className="flex items-center gap-2"
         >
+          <UserSearch />
           <ThemeToggle />
           {user ? (
             <Link to="/dashboard">
