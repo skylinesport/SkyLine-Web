@@ -3,6 +3,9 @@ import { Calendar, ExternalLink, CheckCircle2, Clock, XCircle, Trash2, Edit2 } f
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { LikeButton } from '@/components/LikeButton';
+import { ShareButton } from '@/components/ShareButton';
+import { PinButton } from '@/components/PinButton';
 
 interface AchievementCardProps {
   id: string;
@@ -14,6 +17,10 @@ interface AchievementCardProps {
   proofUrl?: string;
   status: 'pending' | 'approved' | 'rejected';
   showActions?: boolean;
+  showSocialActions?: boolean;
+  likesCount?: number;
+  isPinned?: boolean;
+  userCode?: string;
   onEdit?: () => void;
   onDelete?: () => void;
 }
@@ -28,6 +35,10 @@ export function AchievementCard({
   proofUrl,
   status,
   showActions = false,
+  showSocialActions = false,
+  likesCount = 0,
+  isPinned = false,
+  userCode,
   onEdit,
   onDelete,
 }: AchievementCardProps) {
@@ -50,13 +61,17 @@ export function AchievementCard({
   };
 
   const StatusIcon = statusConfig[status].icon;
+  const shareUrl = userCode 
+    ? `${window.location.origin}/profile/${userCode}#achievement-${id}`
+    : window.location.href;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      className="glass-card p-5 group"
+      className={cn("glass-card p-5 group", isPinned && "ring-2 ring-primary/50")}
+      id={`achievement-${id}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
@@ -79,6 +94,12 @@ export function AchievementCard({
               <StatusIcon className="w-3 h-3" />
               {statusConfig[status].label}
             </span>
+
+            {isPinned && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary border border-primary/30">
+                📌 Pinned
+              </span>
+            )}
           </div>
           
           <h3 className="text-lg font-semibold text-foreground truncate">{title}</h3>
@@ -109,26 +130,36 @@ export function AchievementCard({
           </div>
         </div>
         
-        {showActions && (
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-              onClick={onEdit}
-            >
-              <Edit2 className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-destructive"
-              onClick={onDelete}
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-col items-end gap-2">
+          {showActions && (
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <PinButton achievementId={id} isPinned={isPinned} />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                onClick={onEdit}
+              >
+                <Edit2 className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={onDelete}
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+          
+          {(showSocialActions || status === 'approved') && (
+            <div className="flex items-center gap-1">
+              <LikeButton achievementId={id} likesCount={likesCount} />
+              <ShareButton title={title} url={shareUrl} />
+            </div>
+          )}
+        </div>
       </div>
     </motion.div>
   );

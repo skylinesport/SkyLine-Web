@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievement_likes: {
+        Row: {
+          achievement_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          achievement_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          achievement_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievement_likes_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       achievements: {
         Row: {
           achievement_date: string | null
@@ -21,6 +57,8 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          is_pinned: boolean | null
+          likes_count: number | null
           proof_url: string | null
           status: Database["public"]["Enums"]["achievement_status"]
           title: string
@@ -36,6 +74,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          is_pinned?: boolean | null
+          likes_count?: number | null
           proof_url?: string | null
           status?: Database["public"]["Enums"]["achievement_status"]
           title: string
@@ -51,6 +91,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          is_pinned?: boolean | null
+          likes_count?: number | null
           proof_url?: string | null
           status?: Database["public"]["Enums"]["achievement_status"]
           title?: string
@@ -134,6 +176,42 @@ export type Database = {
         }
         Relationships: []
       }
+      followers: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "followers_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "followers_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -174,36 +252,54 @@ export type Database = {
       }
       profiles: {
         Row: {
+          about: string | null
           avatar_url: string | null
           bio: string | null
           created_at: string
+          followers_count: number | null
+          following_count: number | null
           full_name: string
           id: string
+          interests: string[] | null
+          skills: string[] | null
           star_rating: number
+          theme_color: string | null
           total_achievements: number
           updated_at: string
           user_code: string
           verified_achievements: number
         }
         Insert: {
+          about?: string | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
+          followers_count?: number | null
+          following_count?: number | null
           full_name: string
           id: string
+          interests?: string[] | null
+          skills?: string[] | null
           star_rating?: number
+          theme_color?: string | null
           total_achievements?: number
           updated_at?: string
           user_code?: string
           verified_achievements?: number
         }
         Update: {
+          about?: string | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
+          followers_count?: number | null
+          following_count?: number | null
           full_name?: string
           id?: string
+          interests?: string[] | null
+          skills?: string[] | null
           star_rating?: number
+          theme_color?: string | null
           total_achievements?: number
           updated_at?: string
           user_code?: string

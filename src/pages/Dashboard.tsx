@@ -14,6 +14,7 @@ import { Badge } from '@/components/Badge';
 import { IdentityCard } from '@/components/IdentityCard';
 import { NotificationBell } from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { UserSearch } from '@/components/UserSearch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -68,6 +69,7 @@ export default function Dashboard() {
         .from('achievements')
         .select('*, categories(name, color)')
         .eq('user_id', user?.id)
+        .order('is_pinned', { ascending: false })
         .order('created_at', { ascending: false });
       if (error) throw error;
       return data;
@@ -200,6 +202,7 @@ export default function Dashboard() {
           </Link>
           
           <div className="flex items-center gap-2">
+            <UserSearch />
             <ThemeToggle />
             <NotificationBell />
             <Link to={`/profile/${profile?.user_code}`}>
@@ -360,6 +363,9 @@ export default function Dashboard() {
                     proofUrl={achievement.proof_url || undefined}
                     status={achievement.status}
                     showActions
+                    isPinned={achievement.is_pinned || false}
+                    likesCount={achievement.likes_count || 0}
+                    userCode={profile?.user_code}
                     onEdit={() => handleEdit(achievement)}
                     onDelete={() => deleteAchievement.mutate(achievement.id)}
                   />
