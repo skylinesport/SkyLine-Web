@@ -6,6 +6,7 @@ import Auth from '@/pages/Auth';
 import Dashboard from '@/pages/Dashboard';
 import Profile from '@/pages/Profile';
 import Admin from '@/pages/Admin';
+import EmailPreview from '@/pages/EmailPreview';
 import NotFound from '@/pages/NotFound';
 
 export function AnimatedRoutes() {
@@ -51,6 +52,14 @@ export function AnimatedRoutes() {
           element={
             <PageTransition>
               <Admin />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/email-preview"
+          element={
+            <PageTransition>
+              <EmailPreview />
             </PageTransition>
           }
         />
