@@ -70,12 +70,12 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.4 }}
           className="flex flex-col md:flex-row border border-border rounded-full overflow-hidden mb-16"
         >
-          <Link 
-            to="/auth" 
+          <a 
+            href="#about" 
             className="flex-1 py-4 px-8 text-center font-medium hover:bg-muted/50 transition-colors duration-300 border-b md:border-b-0 md:border-r border-border"
           >
             About & Features
-          </Link>
+          </a>
           <Link 
             to="/#leaderboard" 
             className="flex-1 py-4 px-8 text-center font-medium hover:bg-muted/50 transition-colors duration-300 border-b md:border-b-0 md:border-r border-border"
