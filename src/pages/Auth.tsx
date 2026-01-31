@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/lib/auth';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const signUpSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -28,6 +29,8 @@ export default function Auth() {
   
   const [isSignUp, setIsSignUp] = useState(searchParams.get('mode') === 'signup');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -48,7 +51,24 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (isForgotPassword) {
+        if (!formData.email) {
+          setErrors({ email: 'Email is required' });
+          setLoading(false);
+          return;
+        }
+        
+        const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+          redirectTo: `${window.location.origin}/auth?mode=reset`,
+        });
+        
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.success('Password reset email sent! Check your inbox.');
+          setIsForgotPassword(false);
+        }
+      } else if (isSignUp) {
         const result = signUpSchema.safeParse(formData);
         if (!result.success) {
           const fieldErrors: Record<string, string> = {};
@@ -69,7 +89,6 @@ export default function Auth() {
           }
         } else {
           toast.success('Account created successfully!');
-          // Navigation will be handled by useEffect after isAdmin is determined
         }
       } else {
         const result = signInSchema.safeParse(formData);
@@ -88,7 +107,6 @@ export default function Auth() {
           toast.error('Invalid email or password');
         } else {
           toast.success('Welcome back!');
-          // Navigation will be handled by useEffect after isAdmin is determined
           navigate('/dashboard');
         }
       }
@@ -115,14 +133,14 @@ export default function Auth() {
           </div>
 
           <h1 className="text-2xl font-bold mb-2">
-            {isSignUp ? 'Create your account' : 'Welcome back'}
+            {isForgotPassword ? 'Reset your password' : isSignUp ? 'Create your account' : 'Welcome back'}
           </h1>
           <p className="text-muted-foreground mb-6">
-            {isSignUp ? 'Start tracking your achievements' : 'Sign in to your account'}
+            {isForgotPassword ? 'Enter your email to receive a reset link' : isSignUp ? 'Start tracking your achievements' : 'Sign in to your account'}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {isSignUp && (
+            {isSignUp && !isForgotPassword && (
               <div>
                 <Label htmlFor="fullName">Full Name</Label>
                 <div className="relative mt-1.5">
@@ -156,40 +174,71 @@ export default function Auth() {
               {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
             </div>
 
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <div className="relative mt-1.5">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="pl-10"
-                />
+            {!isForgotPassword && (
+              <div>
+                <Label htmlFor="password">Password</Label>
+                <div className="relative mt-1.5">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="pl-10 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {errors.password && <p className="text-sm text-destructive mt-1">{errors.password}</p>}
+                
+                {!isSignUp && (
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotPassword(true)}
+                    className="text-sm text-primary hover:underline mt-2 block"
+                  >
+                    Forgot password?
+                  </button>
+                )}
               </div>
-              {errors.password && <p className="text-sm text-destructive mt-1">{errors.password}</p>}
-            </div>
+            )}
 
             <Button
               type="submit"
               disabled={loading}
               className="w-full gold-gradient text-primary-foreground font-semibold h-11"
             >
-              {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
+              {loading ? 'Loading...' : isForgotPassword ? 'Send Reset Link' : isSignUp ? 'Create Account' : 'Sign In'}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-primary hover:underline font-medium"
-            >
-              {isSignUp ? 'Sign in' : 'Sign up'}
-            </button>
+            {isForgotPassword ? (
+              <button
+                type="button"
+                onClick={() => setIsForgotPassword(false)}
+                className="text-primary hover:underline font-medium"
+              >
+                Back to sign in
+              </button>
+            ) : (
+              <>
+                {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
+                <button
+                  type="button"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  className="text-primary hover:underline font-medium"
+                >
+                  {isSignUp ? 'Sign in' : 'Sign up'}
+                </button>
+              </>
+            )}
           </p>
         </div>
       </motion.div>
