@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Shield, ShieldOff, User, Star } from 'lucide-react';
+import { Search, Shield, ShieldOff, User, Trash2, Ban, CheckCircle } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
@@ -13,12 +13,36 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/lib/auth';
 
 export function UserManagement() {
   const [search, setSearch] = useState('');
+  const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [restrictUserId, setRestrictUserId] = useState<string | null>(null);
+  const [restrictReason, setRestrictReason] = useState('');
   const queryClient = useQueryClient();
+  const { user: currentUser } = useAuth();
 
   const { data: users, isLoading } = useQuery({
     queryKey: ['admin-users', search],
@@ -26,7 +50,7 @@ export function UserManagement() {
       let query = supabase
         .from('profiles')
         .select('*')
-        .order('star_rating', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(50);
 
       if (search) {
@@ -74,6 +98,55 @@ export function UserManagement() {
     onError: () => toast.error('Failed to update role'),
   });
 
+  const restrictUser = useMutation({
+    mutationFn: async ({ userId, restrict, reason }: { userId: string; restrict: boolean; reason?: string }) => {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          is_restricted: restrict,
+          restriction_reason: restrict ? reason : null,
+          restricted_at: restrict ? new Date().toISOString() : null,
+          restricted_by: restrict ? currentUser?.id : null,
+        })
+        .eq('id', userId);
+      if (error) throw error;
+    },
+    onSuccess: (_, { restrict }) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      toast.success(restrict ? 'User account restricted' : 'User account unrestricted');
+      setRestrictUserId(null);
+      setRestrictReason('');
+    },
+    onError: () => toast.error('Failed to update restriction'),
+  });
+
+  const deleteUser = useMutation({
+    mutationFn: async (userId: string) => {
+      // Delete user's achievements first
+      await supabase.from('achievements').delete().eq('user_id', userId);
+      // Delete user's badges
+      await supabase.from('user_badges').delete().eq('user_id', userId);
+      // Delete user's notifications
+      await supabase.from('notifications').delete().eq('user_id', userId);
+      // Delete user's followers/following
+      await supabase.from('followers').delete().or(`follower_id.eq.${userId},following_id.eq.${userId}`);
+      // Delete user's likes
+      await supabase.from('achievement_likes').delete().eq('user_id', userId);
+      // Delete user roles
+      await supabase.from('user_roles').delete().eq('user_id', userId);
+      // Finally delete the profile
+      const { error } = await supabase.from('profiles').delete().eq('id', userId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-roles'] });
+      toast.success('User account deleted');
+      setDeleteUserId(null);
+    },
+    onError: () => toast.error('Failed to delete user'),
+  });
+
   const isUserAdmin = (userId: string) => adminUsers?.includes(userId) || false;
 
   return (
@@ -82,11 +155,14 @@ export function UserManagement() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search users..."
+            placeholder="Search users by name or code..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
           />
+        </div>
+        <div className="text-sm text-muted-foreground">
+          {users?.length || 0} users
         </div>
       </div>
 
@@ -97,7 +173,7 @@ export function UserManagement() {
               <TableHead>User</TableHead>
               <TableHead>Code</TableHead>
               <TableHead>Star Rating</TableHead>
-              <TableHead>Achievements</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Role</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -112,8 +188,9 @@ export function UserManagement() {
             ) : users && users.length > 0 ? (
               users.map((user) => {
                 const userIsAdmin = isUserAdmin(user.id);
+                const isCurrentUser = user.id === currentUser?.id;
                 return (
-                  <TableRow key={user.id}>
+                  <TableRow key={user.id} className={user.is_restricted ? 'opacity-60' : ''}>
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-xs font-bold text-primary-foreground">
@@ -121,6 +198,9 @@ export function UserManagement() {
                         </div>
                         <div>
                           <p className="font-medium">{user.full_name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Joined {new Date(user.created_at).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
                     </TableCell>
@@ -136,13 +216,21 @@ export function UserManagement() {
                       <StarRating rating={Number(user.star_rating)} size="sm" />
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">
-                        {user.verified_achievements}/{user.total_achievements}
-                      </span>
+                      {user.is_restricted ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium">
+                          <Ban className="w-3 h-3" />
+                          Restricted
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-success/20 text-success text-xs font-medium">
+                          <CheckCircle className="w-3 h-3" />
+                          Active
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {userIsAdmin ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs font-medium">
                           <Shield className="w-3 h-3" />
                           Admin
                         </span>
@@ -154,23 +242,57 @@ export function UserManagement() {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant={userIsAdmin ? "destructive" : "outline"}
-                        size="sm"
-                        onClick={() => toggleAdmin.mutate({ userId: user.id, isAdmin: userIsAdmin })}
-                      >
-                        {userIsAdmin ? (
-                          <>
-                            <ShieldOff className="w-4 h-4 mr-1" />
-                            Remove Admin
-                          </>
-                        ) : (
-                          <>
-                            <Shield className="w-4 h-4 mr-1" />
-                            Make Admin
-                          </>
+                      <div className="flex items-center justify-end gap-2">
+                        {/* Toggle Admin */}
+                        {!isCurrentUser && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleAdmin.mutate({ userId: user.id, isAdmin: userIsAdmin })}
+                            title={userIsAdmin ? 'Remove admin' : 'Make admin'}
+                          >
+                            {userIsAdmin ? (
+                              <ShieldOff className="w-4 h-4 text-muted-foreground" />
+                            ) : (
+                              <Shield className="w-4 h-4 text-muted-foreground" />
+                            )}
+                          </Button>
                         )}
-                      </Button>
+                        
+                        {/* Toggle Restriction */}
+                        {!isCurrentUser && !userIsAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              if (user.is_restricted) {
+                                restrictUser.mutate({ userId: user.id, restrict: false });
+                              } else {
+                                setRestrictUserId(user.id);
+                              }
+                            }}
+                            title={user.is_restricted ? 'Unrestrict user' : 'Restrict user'}
+                          >
+                            {user.is_restricted ? (
+                              <CheckCircle className="w-4 h-4 text-success" />
+                            ) : (
+                              <Ban className="w-4 h-4 text-warning" />
+                            )}
+                          </Button>
+                        )}
+                        
+                        {/* Delete User */}
+                        {!isCurrentUser && !userIsAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeleteUserId(user.id)}
+                            title="Delete user"
+                          >
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -185,6 +307,67 @@ export function UserManagement() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!deleteUserId} onOpenChange={() => setDeleteUserId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete User Account</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the user's account
+              and all their data including achievements, badges, and followers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteUserId && deleteUser.mutate(deleteUserId)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete Account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Restrict User Dialog */}
+      <Dialog open={!!restrictUserId} onOpenChange={() => setRestrictUserId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Restrict User Account</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Restricting a user will prevent them from accessing their dashboard. 
+              They will see a message explaining their account is restricted.
+            </p>
+            <div>
+              <Label>Reason for restriction</Label>
+              <Textarea
+                value={restrictReason}
+                onChange={(e) => setRestrictReason(e.target.value)}
+                placeholder="Explain why this account is being restricted..."
+                className="mt-1"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRestrictUserId(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => restrictUserId && restrictUser.mutate({ 
+                userId: restrictUserId, 
+                restrict: true, 
+                reason: restrictReason 
+              })}
+            >
+              Restrict Account
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
