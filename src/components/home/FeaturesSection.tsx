@@ -69,7 +69,7 @@ const cardVariants = {
 
 export function FeaturesSection() {
   return (
-    <section className="py-24 px-4 md:px-8 lg:px-16 border-t border-border">
+    <section id="features" className="py-24 px-4 md:px-8 lg:px-16 border-t border-border">
       <div className="container mx-auto">
         {/* Section Header with reveal animation */}
         <div className="mb-16">
@@ -80,7 +80,7 @@ export function FeaturesSection() {
             transition={{ duration: 0.6, ease: smoothEase }}
             className="flex items-baseline gap-4 mb-4"
           >
-            <span className="text-muted-foreground text-sm font-medium">02</span>
+            <span className="text-muted-foreground text-sm font-medium">03</span>
             <span className="text-muted-foreground text-sm">/Features</span>
           </motion.div>
           

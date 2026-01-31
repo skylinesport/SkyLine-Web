@@ -124,7 +124,7 @@ export function LeaderboardSection() {
             transition={{ duration: 0.6, ease: smoothEase }}
             className="flex items-baseline gap-4 mb-4"
           >
-            <span className="text-muted-foreground text-sm font-medium">01</span>
+            <span className="text-muted-foreground text-sm font-medium">02</span>
             <span className="text-muted-foreground text-sm">/Showcase</span>
           </motion.div>
           <motion.div
