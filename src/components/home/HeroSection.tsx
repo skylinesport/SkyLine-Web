@@ -76,12 +76,12 @@ export function HeroSection() {
           >
             About & Features
           </a>
-          <Link 
-            to="/#leaderboard" 
+          <a 
+            href="#leaderboard" 
             className="flex-1 py-4 px-8 text-center font-medium hover:bg-muted/50 transition-colors duration-300 border-b md:border-b-0 md:border-r border-border"
           >
             Leaderboard <span className="text-muted-foreground">(Top 10)</span>
-          </Link>
+          </a>
           <Link 
             to={user ? "/dashboard" : "/auth"} 
             className="flex-1 py-4 px-8 text-center font-medium hover:bg-muted/50 transition-colors duration-300"
