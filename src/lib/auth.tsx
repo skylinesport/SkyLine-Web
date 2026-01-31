@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -75,6 +75,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       },
     });
+    
+    // If signup successful and we have confirmation URL, send branded email
+    if (!error && data?.user) {
+      try {
+        // Send branded verification email via edge function
+        await supabase.functions.invoke('send-email', {
+          body: {
+            type: 'verification',
+            email: email,
+            url: redirectUrl,
+          },
+        });
+      } catch (emailError) {
+        console.log('Branded email sending failed, default email will be used:', emailError);
+      }
+    }
     
     return { error: error as Error | null };
   };
