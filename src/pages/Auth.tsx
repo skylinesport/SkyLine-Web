@@ -31,6 +31,8 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [sentEmail, setSentEmail] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -88,7 +90,8 @@ export default function Auth() {
             toast.error(error.message);
           }
         } else {
-          toast.success('Account created successfully!');
+          setSentEmail(formData.email);
+          setEmailSent(true);
         }
       } else {
         const result = signInSchema.safeParse(formData);
@@ -132,12 +135,55 @@ export default function Auth() {
             <img src={logo} alt="SkyLine" className="h-10 w-auto dark:invert" />
           </div>
 
-          <h1 className="text-2xl font-bold mb-2">
-            {isForgotPassword ? 'Reset your password' : isSignUp ? 'Create your account' : 'Welcome back'}
-          </h1>
-          <p className="text-muted-foreground mb-6">
-            {isForgotPassword ? 'Enter your email to receive a reset link' : isSignUp ? 'Start tracking your achievements' : 'Sign in to your account'}
-          </p>
+          {emailSent ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-6"
+            >
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <Mail className="w-8 h-8 text-primary" />
+              </div>
+              <h1 className="text-2xl font-bold mb-2">Check your email</h1>
+              <p className="text-muted-foreground mb-4">
+                We've sent a verification link to<br />
+                <span className="font-medium text-foreground">{sentEmail}</span>
+              </p>
+              <p className="text-sm text-muted-foreground mb-6">
+                Click the link in your email to verify your account and start tracking achievements.
+              </p>
+              <div className="space-y-3">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setEmailSent(false);
+                    setIsSignUp(false);
+                    setFormData({ email: '', password: '', fullName: '' });
+                  }}
+                >
+                  Back to Sign In
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  Didn't receive the email? Check your spam folder or{' '}
+                  <button
+                    type="button"
+                    onClick={() => setEmailSent(false)}
+                    className="text-primary hover:underline"
+                  >
+                    try again
+                  </button>
+                </p>
+              </div>
+            </motion.div>
+          ) : (
+            <>
+              <h1 className="text-2xl font-bold mb-2">
+                {isForgotPassword ? 'Reset your password' : isSignUp ? 'Create your account' : 'Welcome back'}
+              </h1>
+              <p className="text-muted-foreground mb-6">
+                {isForgotPassword ? 'Enter your email to receive a reset link' : isSignUp ? 'Start tracking your achievements' : 'Sign in to your account'}
+              </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && !isForgotPassword && (
@@ -240,6 +286,8 @@ export default function Auth() {
               </>
             )}
           </p>
+            </>
+          )}
         </div>
       </motion.div>
     </div>
