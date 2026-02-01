@@ -113,19 +113,19 @@ export function LeaderboardSection() {
   });
 
   return (
-    <section id="leaderboard" className="py-24 px-4 md:px-8 lg:px-16">
+    <section id="leaderboard" className="py-16 md:py-24 px-4 md:px-8 lg:px-16">
       <div className="container mx-auto max-w-5xl">
         {/* Section Header */}
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: smoothEase }}
-            className="flex items-baseline gap-4 mb-4"
+            className="flex items-baseline gap-3 md:gap-4 mb-3 md:mb-4"
           >
-            <span className="text-muted-foreground text-sm font-medium">02</span>
-            <span className="text-muted-foreground text-sm">/Showcase</span>
+            <span className="text-muted-foreground text-xs md:text-sm font-medium">02</span>
+            <span className="text-muted-foreground text-xs md:text-sm">/Showcase</span>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -134,7 +134,7 @@ export function LeaderboardSection() {
             transition={{ duration: 0.6, ease: smoothEase, delay: 0.1 }}
             className="flex items-baseline gap-4 mb-2"
           >
-            <span className="text-muted-foreground text-sm">2024-2025</span>
+            <span className="text-muted-foreground text-xs md:text-sm">2024-2025</span>
           </motion.div>
           <div className="overflow-hidden">
             <motion.h2
@@ -142,7 +142,7 @@ export function LeaderboardSection() {
               whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: smoothEase }}
-              className="text-[clamp(3rem,8vw,7rem)] font-extrabold leading-[0.9] tracking-tighter"
+              className="text-[clamp(2rem,8vw,7rem)] font-extrabold leading-[0.9] tracking-tighter"
             >
               Featured<span className="gold-text">achievers</span>
             </motion.h2>
@@ -152,7 +152,7 @@ export function LeaderboardSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: smoothEase, delay: 0.3 }}
-            className="text-muted-foreground mt-4 max-w-xl text-lg"
+            className="text-muted-foreground mt-3 md:mt-4 max-w-xl text-base md:text-lg"
           >
             A collection of top performers that showcase excellence in non-academic achievements.
           </motion.p>
@@ -164,12 +164,12 @@ export function LeaderboardSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: smoothEase, delay: 0.2 }}
-          className="flex flex-wrap items-center gap-4 mb-8"
+          className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 mb-6 md:mb-8"
         >
           <div className="flex items-center gap-2">
             <Calendar className="w-4 h-4 text-muted-foreground" />
             <Select value={timeFilter} onValueChange={(v) => setTimeFilter(v as TimeFilter)}>
-              <SelectTrigger className="w-32 border-border">
+              <SelectTrigger className="w-28 md:w-32 border-border text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -182,7 +182,7 @@ export function LeaderboardSection() {
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-muted-foreground" />
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-40 border-border">
+              <SelectTrigger className="w-36 md:w-40 border-border text-sm">
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
@@ -201,7 +201,7 @@ export function LeaderboardSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
-          className="grid gap-4"
+          className="grid gap-3 md:gap-4"
         >
           {topUsers && topUsers.length > 0 ? (
             topUsers.map((user, index) => (
@@ -221,9 +221,9 @@ export function LeaderboardSection() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="py-16 text-center"
+              className="py-12 md:py-16 text-center"
             >
-              <p className="text-muted-foreground text-lg">
+              <p className="text-muted-foreground text-base md:text-lg">
                 Be the first to join the leaderboard!
               </p>
             </motion.div>
@@ -246,19 +246,19 @@ function LeaderboardRow({ rank, name, avatarUrl, starRating, achievementCount }:
   const isTop3 = rank <= 3;
   
   return (
-    <div className={`group flex items-center gap-6 p-6 rounded-2xl border transition-all duration-300 hover:border-primary/50 hover:bg-muted/30 ${isTop3 ? 'border-primary/30 bg-primary/5' : 'border-border'}`}>
+    <div className={`group flex items-center gap-3 md:gap-6 p-4 md:p-6 rounded-xl md:rounded-2xl border transition-all duration-300 hover:border-primary/50 hover:bg-muted/30 ${isTop3 ? 'border-primary/30 bg-primary/5' : 'border-border'}`}>
       {/* Rank */}
-      <div className={`text-4xl font-extrabold w-16 ${isTop3 ? 'gold-text' : 'text-muted-foreground'}`}>
+      <div className={`text-2xl md:text-4xl font-extrabold w-10 md:w-16 ${isTop3 ? 'gold-text' : 'text-muted-foreground'}`}>
         {String(rank).padStart(2, '0')}
       </div>
 
       {/* Avatar */}
       <div className="relative">
-        <div className={`w-14 h-14 rounded-full overflow-hidden border-2 ${isTop3 ? 'border-primary' : 'border-border'}`}>
+        <div className={`w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 ${isTop3 ? 'border-primary' : 'border-border'}`}>
           {avatarUrl ? (
             <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-muted flex items-center justify-center text-xl font-bold">
+            <div className="w-full h-full bg-muted flex items-center justify-center text-base md:text-xl font-bold">
               {name.charAt(0).toUpperCase()}
             </div>
           )}
@@ -267,21 +267,21 @@ function LeaderboardRow({ rank, name, avatarUrl, starRating, achievementCount }:
 
       {/* Name */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-xl font-bold truncate group-hover:gold-text transition-colors duration-300">
+        <h3 className="text-base md:text-xl font-bold truncate group-hover:gold-text transition-colors duration-300">
           {name}
         </h3>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-muted-foreground text-xs md:text-sm">
           {achievementCount} achievement{achievementCount !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* Star Rating */}
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <StarRating rating={starRating} size="md" />
       </div>
 
       {/* Arrow */}
-      <div className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300">
+      <div className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 text-sm md:text-base">
         →
       </div>
     </div>
