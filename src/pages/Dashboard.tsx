@@ -229,16 +229,16 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
           <Link to="/">
-            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
+            <img src={logo} alt="SkyLine" className="h-6 md:h-8 w-auto dark:invert" />
           </Link>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <UserSearch />
             <ThemeToggle />
             <NotificationBell />
-            <Link to={`/profile/${profile?.user_code}`}>
+            <Link to={`/profile/${profile?.user_code}`} className="hidden sm:block">
               <Button variant="ghost" size="icon"><User className="w-5 h-5" /></Button>
             </Link>
             <Button variant="ghost" size="icon" onClick={handleSignOut}>
@@ -248,44 +248,44 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <main className="container mx-auto px-4 py-4 md:py-8">
+        <div className="grid lg:grid-cols-3 gap-4 md:gap-6">
           {/* Stats Cards */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-3 grid md:grid-cols-3 gap-4">
-            <div className="glass-card p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg gold-gradient flex items-center justify-center">
-                  <Star className="w-5 h-5 text-primary-foreground" />
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            <div className="glass-card p-4 md:p-6 col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg gold-gradient flex items-center justify-center">
+                  <Star className="w-4 h-4 md:w-5 md:h-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Star Rating</p>
-                  <p className="text-2xl font-bold">{starRating.toFixed(1)}</p>
+                  <p className="text-xs md:text-sm text-muted-foreground">Star Rating</p>
+                  <p className="text-xl md:text-2xl font-bold">{starRating.toFixed(1)}</p>
                 </div>
               </div>
-              <StarRating rating={starRating} size="md" />
+              <StarRating rating={starRating} size="sm" />
             </div>
             
-            <div className="glass-card p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-accent" />
+            <div className="glass-card p-4 md:p-6">
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                  <Trophy className="w-4 h-4 md:w-5 md:h-5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Achievements</p>
-                  <p className="text-2xl font-bold">{profile?.total_achievements || 0}</p>
+                  <p className="text-xs md:text-sm text-muted-foreground">Achievements</p>
+                  <p className="text-xl md:text-2xl font-bold">{profile?.total_achievements || 0}</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">{profile?.verified_achievements || 0} verified</p>
+              <p className="text-xs md:text-sm text-muted-foreground">{profile?.verified_achievements || 0} verified</p>
             </div>
             
-            <div className="glass-card p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-success" />
+            <div className="glass-card p-4 md:p-6">
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-success/20 flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-success" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Next Star</p>
-                  <p className="text-2xl font-bold">{nextStar <= 7 ? `★${nextStar}` : 'MAX'}</p>
+                  <p className="text-xs md:text-sm text-muted-foreground">Next Star</p>
+                  <p className="text-xl md:text-2xl font-bold">{nextStar <= 7 ? `★${nextStar}` : 'MAX'}</p>
                 </div>
               </div>
               <ProgressBar value={progressToNext} max={100} showPercentage={false} size="sm" />
@@ -293,10 +293,10 @@ export default function Dashboard() {
           </motion.div>
 
           {/* Identity Card */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-3 glass-card p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Copy className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold">Your Digital ID</h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-3 glass-card p-4 md:p-6">
+            <div className="flex items-center gap-2 mb-3 md:mb-4">
+              <Copy className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              <h2 className="text-base md:text-lg font-semibold">Your Digital ID</h2>
             </div>
             {profile && (
               <IdentityCard
@@ -309,36 +309,36 @@ export default function Dashboard() {
           </motion.div>
 
           {/* Badges */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3 glass-card p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Award className="w-5 h-5 text-primary" />
-              <h2 className="text-lg font-semibold">Your Badges</h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3 glass-card p-4 md:p-6">
+            <div className="flex items-center gap-2 mb-3 md:mb-4">
+              <Award className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              <h2 className="text-base md:text-lg font-semibold">Your Badges</h2>
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 md:gap-4">
               {userBadges && userBadges.length > 0 ? (
                 userBadges.map((ub) => (
                   <Badge key={ub.id} name={ub.badges.name} icon={ub.badges.icon} color={ub.badges.color} description={ub.badges.description} />
                 ))
               ) : (
-                <p className="text-muted-foreground text-sm">Complete achievements to earn badges!</p>
+                <p className="text-muted-foreground text-xs md:text-sm">Complete achievements to earn badges!</p>
               )}
             </div>
           </motion.div>
 
           {/* Achievements */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="lg:col-span-3">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">My Achievements</h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg md:text-xl font-semibold">My Achievements</h2>
               <Dialog open={dialogOpen} onOpenChange={(open) => {
                 if (!open) closeDialog();
                 else setDialogOpen(true);
               }}>
                 <DialogTrigger asChild>
-                  <Button className="gold-gradient text-primary-foreground">
+                  <Button className="gold-gradient text-primary-foreground w-full sm:w-auto">
                     <Plus className="w-4 h-4 mr-2" /> Add Achievement
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="bg-card border-border">
+                <DialogContent className="bg-card border-border max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>{editingAchievement ? 'Edit Achievement' : 'Add New Achievement'}</DialogTitle>
                   </DialogHeader>
@@ -382,7 +382,7 @@ export default function Dashboard() {
               </Dialog>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
               {achievements && achievements.length > 0 ? (
                 achievements.map((achievement) => (
                   <AchievementCard
@@ -404,9 +404,9 @@ export default function Dashboard() {
                   />
                 ))
               ) : (
-                <div className="md:col-span-2 glass-card p-12 text-center">
-                  <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No achievements yet. Add your first one!</p>
+                <div className="sm:col-span-2 glass-card p-8 md:p-12 text-center">
+                  <Trophy className="w-10 h-10 md:w-12 md:h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground text-sm md:text-base">No achievements yet. Add your first one!</p>
                 </div>
               )}
             </div>

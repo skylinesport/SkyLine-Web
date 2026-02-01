@@ -96,14 +96,14 @@ export function ProfileSettings({ profile }: ProfileSettingsProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Settings className="w-4 h-4 mr-2" />
+        <Button variant="outline" size="sm" className="text-xs md:text-sm">
+          <Settings className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2" />
           Edit Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-card border-border max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-card border-border max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Profile Settings</DialogTitle>
+          <DialogTitle className="text-base md:text-lg">Profile Settings</DialogTitle>
         </DialogHeader>
         <form
           onSubmit={(e) => {

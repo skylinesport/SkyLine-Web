@@ -71,11 +71,11 @@ export function AchievementModeration() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-muted-foreground" />
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as 'all' | 'pending' | 'approved' | 'rejected')}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-32 sm:w-40 text-sm">
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
@@ -88,7 +88,85 @@ export function AchievementModeration() {
         </div>
       </div>
 
-      <div className="glass-card overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-3">
+        {isLoading ? (
+          <div className="glass-card p-8 text-center">
+            <div className="animate-pulse text-muted-foreground">Loading...</div>
+          </div>
+        ) : achievements && achievements.length > 0 ? (
+          achievements.map((achievement) => (
+            <div key={achievement.id} className="glass-card p-4 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium truncate">{achievement.title}</p>
+                  <Link
+                    to={`/profile/${achievement.profiles?.user_code}`}
+                    className="text-primary hover:underline text-xs"
+                  >
+                    {achievement.profiles?.full_name}
+                  </Link>
+                </div>
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${statusColors[achievement.status as keyof typeof statusColors]}`}>
+                  <Clock className="w-2.5 h-2.5" />
+                  {achievement.status}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span
+                  className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium"
+                  style={{
+                    backgroundColor: `${achievement.categories?.color}20`,
+                    color: achievement.categories?.color,
+                  }}
+                >
+                  {achievement.categories?.name}
+                </span>
+                {achievement.proof_url && (
+                  <a
+                    href={achievement.proof_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-primary hover:underline text-xs"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    Proof
+                  </a>
+                )}
+              </div>
+              {achievement.status === 'pending' && (
+                <div className="flex gap-2 pt-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 text-success border-success/30 hover:bg-success/10 text-xs"
+                    onClick={() => updateStatus.mutate({ id: achievement.id, status: 'approved' })}
+                  >
+                    <Check className="w-3 h-3 mr-1" />
+                    Approve
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 text-destructive border-destructive/30 hover:bg-destructive/10 text-xs"
+                    onClick={() => updateStatus.mutate({ id: achievement.id, status: 'rejected' })}
+                  >
+                    <X className="w-3 h-3 mr-1" />
+                    Reject
+                  </Button>
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="glass-card p-8 text-center text-muted-foreground">
+            No achievements found
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block glass-card overflow-hidden overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>

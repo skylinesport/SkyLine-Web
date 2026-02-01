@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Users, Trophy, Tag, Award, LogOut } from 'lucide-react';
+import { Shield, Users, Trophy, Tag, Award, LogOut, User } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -55,53 +55,56 @@ export default function Admin() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
-            <span className="px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-xs font-medium">
+            <img src={logo} alt="SkyLine" className="h-6 md:h-8 w-auto dark:invert" />
+            <span className="px-1.5 md:px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-[10px] md:text-xs font-medium">
               Admin
             </span>
           </Link>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <Link to="/dashboard">
-              <Button variant="ghost" size="sm">Dashboard</Button>
+              <Button variant="ghost" size="sm" className="text-xs md:text-sm px-2 md:px-3">
+                <span className="hidden sm:inline">Dashboard</span>
+                <User className="w-4 h-4 sm:hidden" />
+              </Button>
             </Link>
             <Button variant="ghost" size="icon" onClick={handleSignOut}>
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-4 h-4 md:w-5 md:h-5" />
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4 md:py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 md:mb-8"
         >
-          <div className="flex items-center gap-3 mb-2">
-            <Shield className="w-6 h-6 text-primary" />
-            <h1 className="text-3xl font-bold">Admin Panel</h1>
+          <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+            <Shield className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+            <h1 className="text-2xl md:text-3xl font-bold">Admin Panel</h1>
           </div>
-          <p className="text-muted-foreground">Manage users, achievements, categories, and badges.</p>
+          <p className="text-muted-foreground text-sm md:text-base">Manage users, achievements, categories, and badges.</p>
         </motion.div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-4">
-            <TabsTrigger value="achievements" className="gap-2">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 md:space-y-6">
+          <TabsList className="grid w-full grid-cols-4 h-auto p-1">
+            <TabsTrigger value="achievements" className="flex-col sm:flex-row gap-1 py-2 px-1 sm:px-3 text-xs sm:text-sm">
               <Trophy className="w-4 h-4" />
               <span className="hidden sm:inline">Achievements</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="gap-2">
+            <TabsTrigger value="users" className="flex-col sm:flex-row gap-1 py-2 px-1 sm:px-3 text-xs sm:text-sm">
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Users</span>
             </TabsTrigger>
-            <TabsTrigger value="categories" className="gap-2">
+            <TabsTrigger value="categories" className="flex-col sm:flex-row gap-1 py-2 px-1 sm:px-3 text-xs sm:text-sm">
               <Tag className="w-4 h-4" />
               <span className="hidden sm:inline">Categories</span>
             </TabsTrigger>
-            <TabsTrigger value="badges" className="gap-2">
+            <TabsTrigger value="badges" className="flex-col sm:flex-row gap-1 py-2 px-1 sm:px-3 text-xs sm:text-sm">
               <Award className="w-4 h-4" />
               <span className="hidden sm:inline">Badges</span>
             </TabsTrigger>
