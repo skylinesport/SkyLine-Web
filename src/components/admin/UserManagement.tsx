@@ -151,22 +151,117 @@ export function UserManagement() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search users by name or code..."
+            placeholder="Search users..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10"
+            className="pl-10 text-sm"
           />
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs sm:text-sm text-muted-foreground">
           {users?.length || 0} users
         </div>
       </div>
 
-      <div className="glass-card overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-3">
+        {isLoading ? (
+          <div className="glass-card p-8 text-center">
+            <div className="animate-pulse text-muted-foreground">Loading...</div>
+          </div>
+        ) : users && users.length > 0 ? (
+          users.map((user) => {
+            const userIsAdmin = isUserAdmin(user.id);
+            const isCurrentUser = user.id === currentUser?.id;
+            return (
+              <div key={user.id} className={`glass-card p-4 ${user.is_restricted ? 'opacity-60' : ''}`}>
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-sm font-bold text-primary-foreground flex-shrink-0">
+                    {user.full_name?.charAt(0)?.toUpperCase() || '?'}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{user.full_name}</p>
+                    <Link 
+                      to={`/profile/${user.user_code}`}
+                      className="font-mono text-xs text-primary hover:underline"
+                    >
+                      {user.user_code}
+                    </Link>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      {user.is_restricted ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-destructive/20 text-destructive text-[10px] font-medium">
+                          <Ban className="w-2.5 h-2.5" />
+                          Restricted
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-success/20 text-success text-[10px] font-medium">
+                          <CheckCircle className="w-2.5 h-2.5" />
+                          Active
+                        </span>
+                      )}
+                      {userIsAdmin && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-medium">
+                          <Shield className="w-2.5 h-2.5" />
+                          Admin
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {!isCurrentUser && (
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-border">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex-1 text-xs"
+                      onClick={() => toggleAdmin.mutate({ userId: user.id, isAdmin: userIsAdmin })}
+                    >
+                      {userIsAdmin ? <ShieldOff className="w-3 h-3 mr-1" /> : <Shield className="w-3 h-3 mr-1" />}
+                      {userIsAdmin ? 'Remove Admin' : 'Make Admin'}
+                    </Button>
+                    {!userIsAdmin && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs"
+                          onClick={() => {
+                            if (user.is_restricted) {
+                              restrictUser.mutate({ userId: user.id, restrict: false });
+                            } else {
+                              setRestrictUserId(user.id);
+                            }
+                          }}
+                        >
+                          {user.is_restricted ? <CheckCircle className="w-3 h-3" /> : <Ban className="w-3 h-3" />}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs text-destructive"
+                          onClick={() => setDeleteUserId(user.id)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <div className="glass-card p-8 text-center text-muted-foreground">
+            No users found
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block glass-card overflow-hidden overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -310,19 +405,19 @@ export function UserManagement() {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!deleteUserId} onOpenChange={() => setDeleteUserId(null)}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-[95vw] sm:max-w-lg">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete User Account</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogDescription className="text-sm">
               This action cannot be undone. This will permanently delete the user's account
               and all their data including achievements, badges, and followers.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+            <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteUserId && deleteUser.mutate(deleteUserId)}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete Account
             </AlertDialogAction>
@@ -332,7 +427,7 @@ export function UserManagement() {
 
       {/* Restrict User Dialog */}
       <Dialog open={!!restrictUserId} onOpenChange={() => setRestrictUserId(null)}>
-        <DialogContent>
+        <DialogContent className="max-w-[95vw] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Restrict User Account</DialogTitle>
           </DialogHeader>
@@ -351,12 +446,13 @@ export function UserManagement() {
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRestrictUserId(null)}>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setRestrictUserId(null)} className="w-full sm:w-auto">
               Cancel
             </Button>
             <Button
               variant="destructive"
+              className="w-full sm:w-auto"
               onClick={() => restrictUserId && restrictUser.mutate({ 
                 userId: restrictUserId, 
                 restrict: true, 

@@ -39,13 +39,13 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       <div
         ref={cardRef}
         className="relative w-full max-w-md mx-auto overflow-hidden"
         style={{
           aspectRatio: '1.586/1', // Standard card ratio
-          borderRadius: '16px',
+          borderRadius: '12px',
           background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.1)',
         }}
@@ -73,37 +73,37 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
         />
 
         {/* Content */}
-        <div className="relative h-full p-6 flex flex-col justify-between">
+        <div className="relative h-full p-4 md:p-6 flex flex-col justify-between">
           {/* Header Row */}
           <div className="flex items-start justify-between">
             {/* Brand Logo */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <img 
                 src={logo} 
                 alt="SkyLine" 
-                className="h-10 w-auto invert"
+                className="h-6 md:h-10 w-auto invert"
               />
               <div>
-                <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <p className="text-[8px] md:text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Elite Member
                 </p>
               </div>
             </div>
             
             {/* NFC Icon */}
-            <div className="flex flex-col items-center gap-1">
-              <Wifi className="w-6 h-6 rotate-90" style={{ color: 'rgba(255,255,255,0.5)' }} />
-              <span className="text-[8px] tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>NFC</span>
+            <div className="flex flex-col items-center gap-0.5 md:gap-1">
+              <Wifi className="w-4 h-4 md:w-6 md:h-6 rotate-90" style={{ color: 'rgba(255,255,255,0.5)' }} />
+              <span className="text-[6px] md:text-[8px] tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>NFC</span>
             </div>
           </div>
 
           {/* Member ID */}
-          <div className="mt-6">
-            <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+          <div className="mt-3 md:mt-6">
+            <p className="text-[8px] md:text-[10px] tracking-[0.15em] uppercase mb-0.5 md:mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Member ID
             </p>
             <p 
-              className="text-xl font-mono font-semibold tracking-[0.1em]"
+              className="text-base md:text-xl font-mono font-semibold tracking-[0.1em]"
               style={{ 
                 color: '#ffffff',
                 textShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
@@ -114,32 +114,32 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
           </div>
 
           {/* Bottom Row */}
-          <div className="flex items-end justify-between mt-auto pt-2">
+          <div className="flex items-end justify-between mt-auto pt-1 md:pt-2">
             {/* Name */}
             <div>
-              <p className="text-sm font-semibold tracking-wide uppercase" style={{ color: '#ffffff' }}>
+              <p className="text-xs md:text-sm font-semibold tracking-wide uppercase" style={{ color: '#ffffff' }}>
                 {name}
               </p>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-6">
+            <div className="flex gap-3 md:gap-6">
               <div className="text-right">
-                <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <p className="text-[8px] md:text-[10px] tracking-[0.15em] uppercase mb-0.5 md:mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Rating
                 </p>
                 <p 
-                  className="text-sm font-bold"
+                  className="text-xs md:text-sm font-bold"
                   style={{ color: '#60a5fa' }}
                 >
                   {starRating.toFixed(1)}★
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] tracking-[0.15em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <p className="text-[8px] md:text-[10px] tracking-[0.15em] uppercase mb-0.5 md:mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Since
                 </p>
-                <p className="text-sm font-bold" style={{ color: '#ffffff' }}>
+                <p className="text-xs md:text-sm font-bold" style={{ color: '#ffffff' }}>
                   {memberSince}
                 </p>
               </div>
@@ -149,8 +149,8 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
       </div>
       
       <div className="flex justify-center">
-        <Button onClick={handleDownload} variant="outline" className="gap-2">
-          <Download className="w-4 h-4" />
+        <Button onClick={handleDownload} variant="outline" className="gap-2 text-xs md:text-sm">
+          <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
           Download as PNG
         </Button>
       </div>

@@ -127,76 +127,76 @@ export default function Profile() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 h-14 md:h-16 flex items-center justify-between">
           <Link to="/">
-            <img src={logo} alt="SkyLine" className="h-8 w-auto dark:invert" />
+            <img src={logo} alt="SkyLine" className="h-6 md:h-8 w-auto dark:invert" />
           </Link>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <UserSearch />
             <ThemeToggle />
-            <Button variant="outline" size="sm" onClick={handleCopyLink}>
-              {copied ? <Check className="w-4 h-4 mr-2" /> : <Share2 className="w-4 h-4 mr-2" />}
-              {copied ? 'Copied!' : 'Share'}
+            <Button variant="outline" size="sm" onClick={handleCopyLink} className="text-xs md:text-sm px-2 md:px-3">
+              {copied ? <Check className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" /> : <Share2 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />}
+              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share'}</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-4xl">
+      <main className="container mx-auto px-4 py-4 md:py-8 max-w-4xl">
         {/* Profile Header with Theme */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-8 text-center mb-8 relative overflow-hidden"
+          className="glass-card p-5 md:p-8 text-center mb-6 md:mb-8 relative overflow-hidden"
         >
           {/* Theme accent */}
           <div 
-            className="absolute top-0 left-0 right-0 h-2"
+            className="absolute top-0 left-0 right-0 h-1.5 md:h-2"
             style={{ backgroundColor: themeColor }}
           />
           
           <div 
-            className="w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-white"
+            className="w-16 h-16 md:w-24 md:h-24 rounded-full mx-auto mb-3 md:mb-4 flex items-center justify-center text-2xl md:text-3xl font-bold text-white"
             style={{ background: `linear-gradient(135deg, ${themeColor}, ${themeColor}dd)` }}
           >
             {profile.full_name?.charAt(0)?.toUpperCase() || '?'}
           </div>
-          <h1 className="text-3xl font-bold mb-2">{profile.full_name}</h1>
-          <p className="text-muted-foreground mb-2">@{profile.user_code}</p>
+          <h1 className="text-xl md:text-3xl font-bold mb-1 md:mb-2">{profile.full_name}</h1>
+          <p className="text-muted-foreground text-sm md:text-base mb-2">@{profile.user_code}</p>
           
           {profile.bio && (
-            <p className="text-sm text-muted-foreground max-w-md mx-auto mb-4">{profile.bio}</p>
+            <p className="text-xs md:text-sm text-muted-foreground max-w-md mx-auto mb-3 md:mb-4">{profile.bio}</p>
           )}
           
           {/* Follow Stats */}
-          <div className="flex justify-center gap-6 mb-4">
+          <div className="flex justify-center gap-4 md:gap-6 mb-3 md:mb-4">
             <div className="text-center">
-              <p className="text-xl font-bold">{followers?.length || 0}</p>
-              <p className="text-xs text-muted-foreground">Followers</p>
+              <p className="text-lg md:text-xl font-bold">{followers?.length || 0}</p>
+              <p className="text-[10px] md:text-xs text-muted-foreground">Followers</p>
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold">{following?.length || 0}</p>
-              <p className="text-xs text-muted-foreground">Following</p>
+              <p className="text-lg md:text-xl font-bold">{following?.length || 0}</p>
+              <p className="text-[10px] md:text-xs text-muted-foreground">Following</p>
             </div>
           </div>
           
-          <div className="flex justify-center mb-4">
-            <StarRating rating={Number(profile.star_rating)} size="xl" />
+          <div className="flex justify-center mb-3 md:mb-4">
+            <StarRating rating={Number(profile.star_rating)} size="lg" />
           </div>
           
-          <div className="flex justify-center gap-8 text-center mb-6">
+          <div className="flex justify-center gap-4 md:gap-8 text-center mb-4 md:mb-6">
             <div>
-              <p className="text-2xl font-bold">{profile.total_achievements}</p>
-              <p className="text-sm text-muted-foreground">Achievements</p>
+              <p className="text-lg md:text-2xl font-bold">{profile.total_achievements}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground">Achievements</p>
             </div>
             <div>
-              <p className="text-2xl font-bold">{profile.verified_achievements}</p>
-              <p className="text-sm text-muted-foreground">Verified</p>
+              <p className="text-lg md:text-2xl font-bold">{profile.verified_achievements}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground">Verified</p>
             </div>
             <div>
-              <p className="text-2xl font-bold">{Number(profile.star_rating).toFixed(1)}</p>
-              <p className="text-sm text-muted-foreground">Stars</p>
+              <p className="text-lg md:text-2xl font-bold">{Number(profile.star_rating).toFixed(1)}</p>
+              <p className="text-[10px] md:text-sm text-muted-foreground">Stars</p>
             </div>
           </div>
 
@@ -216,13 +216,13 @@ export default function Profile() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="glass-card p-6 mb-8"
+            className="glass-card p-4 md:p-6 mb-6 md:mb-8"
           >
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5" style={{ color: themeColor }} />
+            <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
               About
             </h2>
-            <p className="text-muted-foreground whitespace-pre-wrap">{profile.about}</p>
+            <p className="text-muted-foreground text-sm md:text-base whitespace-pre-wrap">{profile.about}</p>
           </motion.div>
         )}
 
@@ -232,19 +232,19 @@ export default function Profile() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="grid md:grid-cols-2 gap-4 mb-8"
+            className="grid sm:grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8"
           >
             {profile.skills && profile.skills.length > 0 && (
-              <div className="glass-card p-6">
-                <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5" style={{ color: themeColor }} />
+              <div className="glass-card p-4 md:p-6">
+                <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-3 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
                   Skills
                 </h2>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
                   {profile.skills.map((skill: string) => (
                     <span
                       key={skill}
-                      className="px-3 py-1 rounded-full text-sm"
+                      className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm"
                       style={{ backgroundColor: `${themeColor}20`, color: themeColor }}
                     >
                       {skill}
@@ -255,16 +255,16 @@ export default function Profile() {
             )}
             
             {profile.interests && profile.interests.length > 0 && (
-              <div className="glass-card p-6">
-                <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Target className="w-5 h-5" style={{ color: themeColor }} />
+              <div className="glass-card p-4 md:p-6">
+                <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-3 flex items-center gap-2">
+                  <Target className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
                   Interests
                 </h2>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
                   {profile.interests.map((interest: string) => (
                     <span
                       key={interest}
-                      className="px-3 py-1 rounded-full text-sm bg-muted text-muted-foreground"
+                      className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm bg-muted text-muted-foreground"
                     >
                       {interest}
                     </span>
@@ -280,10 +280,10 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="mb-8"
+          className="mb-6 md:mb-8"
         >
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Copy className="w-5 h-5" style={{ color: themeColor }} />
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
+            <Copy className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
             Digital Identity Card
           </h2>
           <IdentityCard
@@ -300,13 +300,13 @@ export default function Profile() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="glass-card p-6 mb-8"
+            className="glass-card p-4 md:p-6 mb-6 md:mb-8"
           >
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5" style={{ color: themeColor }} />
+            <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
+              <Award className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
               Earned Badges
             </h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 md:gap-4">
               {userBadges.map((ub) => (
                 <Badge
                   key={ub.id}
@@ -326,13 +326,13 @@ export default function Profile() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Trophy className="w-5 h-5" style={{ color: themeColor }} />
+          <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
+            <Trophy className="w-4 h-4 md:w-5 md:h-5" style={{ color: themeColor }} />
             Verified Achievements
           </h2>
           
           {achievements && achievements.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
               {achievements.map((achievement) => (
                 <AchievementCard
                   key={achievement.id}
@@ -352,17 +352,17 @@ export default function Profile() {
               ))}
             </div>
           ) : (
-            <div className="glass-card p-8 text-center">
-              <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No verified achievements yet.</p>
+            <div className="glass-card p-6 md:p-8 text-center">
+              <Trophy className="w-10 h-10 md:w-12 md:h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground text-sm md:text-base">No verified achievements yet.</p>
             </div>
           )}
         </motion.div>
       </main>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-border/50 mt-12">
-        <div className="container mx-auto text-center text-sm text-muted-foreground">
+      <footer className="py-6 md:py-8 px-4 border-t border-border/50 mt-8 md:mt-12">
+        <div className="container mx-auto text-center text-xs md:text-sm text-muted-foreground">
           <p>© 2024 SkyLine. Celebrate your achievements.</p>
         </div>
       </footer>
