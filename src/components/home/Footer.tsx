@@ -47,9 +47,9 @@ export function Footer() {
   return (
     <footer className="relative bg-background border-t border-border">
       {/* Main CTA Section */}
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-24 pb-16">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 pt-16 md:pt-24 pb-12 md:pb-16">
         {/* Large CTA Text with reveal animation */}
-        <div className="mb-16">
+        <div className="mb-10 md:mb-16">
           <div className="overflow-hidden">
             <motion.p
               initial="hidden"
@@ -57,7 +57,7 @@ export function Footer() {
               viewport={{ once: true, margin: "-100px" }}
               custom={0}
               variants={textRevealVariants}
-              className="text-muted-foreground text-sm md:text-base mb-4"
+              className="text-muted-foreground text-xs md:text-sm lg:text-base mb-3 md:mb-4"
             >
               Ready to showcase your achievements?
             </motion.p>
@@ -71,11 +71,11 @@ export function Footer() {
                 viewport={{ once: true, margin: "-100px" }}
                 custom={0.1}
                 variants={textRevealVariants}
-                className="text-[clamp(2.5rem,8vw,6rem)] font-extrabold leading-[0.95] tracking-tighter"
+                className="text-[clamp(1.75rem,6vw,6rem)] font-extrabold leading-[0.95] tracking-tighter"
               >
-                <span className="inline-flex items-center gap-4 group-hover:gold-text transition-colors duration-500">
+                <span className="inline-flex items-center gap-2 md:gap-4 group-hover:gold-text transition-colors duration-500">
                   Let's Get Started
-                  <ArrowUpRight className="w-[clamp(1.5rem,4vw,3rem)] h-[clamp(1.5rem,4vw,3rem)] group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
+                  <ArrowUpRight className="w-6 h-6 md:w-[clamp(1.5rem,4vw,3rem)] md:h-[clamp(1.5rem,4vw,3rem)] group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
                 </span>
               </motion.h2>
             </div>
@@ -89,22 +89,21 @@ export function Footer() {
           viewport={{ once: true, margin: "-50px" }}
           custom={0.2}
           variants={fadeUpVariants}
-          className="mb-20"
+          className="mb-12 md:mb-20"
         >
           <a 
             href="mailto:hello@skyline.app" 
-            className="group inline-flex items-center gap-3 text-lg md:text-xl text-muted-foreground hover:text-foreground transition-colors duration-300"
+            className="group inline-flex items-center gap-2 md:gap-3 text-base md:text-lg lg:text-xl text-muted-foreground hover:text-foreground transition-colors duration-300"
           >
             <span className="relative">
               hello@skyline.app
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-500" />
             </span>
-            <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+            <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
           </a>
         </motion.div>
-
         {/* Bottom Section */}
-        <div className="grid md:grid-cols-3 gap-12 pt-12 border-t border-border">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 pt-8 md:pt-12 border-t border-border">
           {/* Navigation */}
           <motion.div
             initial="hidden"
@@ -113,13 +112,13 @@ export function Footer() {
             custom={0.3}
             variants={fadeUpVariants}
           >
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Navigation</p>
-            <ul className="space-y-3">
+            <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-3 md:mb-4">Navigation</p>
+            <ul className="space-y-2 md:space-y-3">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <Link 
                     to={link.href} 
-                    className="group inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
+                    className="group inline-flex items-center gap-2 text-sm md:text-base text-foreground hover:text-primary transition-colors duration-300"
                   >
                     <span className="relative">
                       {link.name}
@@ -139,21 +138,21 @@ export function Footer() {
             custom={0.4}
             variants={fadeUpVariants}
           >
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Connect</p>
-            <ul className="space-y-3">
+            <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-3 md:mb-4">Connect</p>
+            <ul className="space-y-2 md:space-y-3">
               {socialLinks.map((link) => (
                 <li key={link.name}>
                   <a 
                     href={link.href} 
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 text-foreground hover:text-primary transition-colors duration-300"
+                    className="group inline-flex items-center gap-2 text-sm md:text-base text-foreground hover:text-primary transition-colors duration-300"
                   >
                     <span className="relative">
                       {link.name}
                       <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary group-hover:w-full transition-all duration-300" />
                     </span>
-                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </a>
                 </li>
               ))}
@@ -167,15 +166,15 @@ export function Footer() {
             viewport={{ once: true, margin: "-50px" }}
             custom={0.5}
             variants={fadeUpVariants}
-            className="md:text-right"
+            className="col-span-2 md:col-span-1 md:text-right pt-4 md:pt-0"
           >
-            <Link to="/" className="inline-block mb-4">
-              <img src={logo} alt="SkyLine" className="h-10 w-auto dark:invert" />
+            <Link to="/" className="inline-block mb-3 md:mb-4">
+              <img src={logo} alt="SkyLine" className="h-8 md:h-10 w-auto dark:invert" />
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               © {new Date().getFullYear()} SkyLine
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               All rights reserved
             </p>
           </motion.div>
@@ -192,12 +191,12 @@ export function Footer() {
             ease: 'linear',
             repeat: Infinity,
           }}
-          className="flex whitespace-nowrap py-6"
+          className="flex whitespace-nowrap py-4 md:py-6"
         >
           {[...Array(4)].map((_, i) => (
             <span 
               key={i} 
-              className="text-[clamp(3rem,10vw,8rem)] font-extrabold tracking-tighter text-foreground/10 mx-8"
+              className="text-[clamp(2rem,8vw,8rem)] font-extrabold tracking-tighter text-foreground/10 mx-4 md:mx-8"
             >
               SKYLINE • ACHIEVEMENTS • EXCELLENCE • VERIFIED •
             </span>

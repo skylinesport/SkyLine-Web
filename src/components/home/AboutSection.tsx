@@ -4,19 +4,19 @@ const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-24 px-4 md:px-8 lg:px-16 border-t border-border">
+    <section id="about" className="py-16 md:py-24 px-4 md:px-8 lg:px-16 border-t border-border">
       <div className="container mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-10 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: smoothEase }}
-            className="flex items-baseline gap-4 mb-4"
+            className="flex items-baseline gap-3 md:gap-4 mb-3 md:mb-4"
           >
-            <span className="text-muted-foreground text-sm font-medium">01</span>
-            <span className="text-muted-foreground text-sm">/About</span>
+            <span className="text-muted-foreground text-xs md:text-sm font-medium">01</span>
+            <span className="text-muted-foreground text-xs md:text-sm">/About</span>
           </motion.div>
           
           <div className="overflow-hidden">
@@ -25,7 +25,7 @@ export function AboutSection() {
               whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: smoothEase }}
-              className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tighter"
+              className="text-[clamp(2rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tighter"
             >
               Beyond <span className="gold-text">Academics</span>
             </motion.h2>
@@ -33,19 +33,19 @@ export function AboutSection() {
         </div>
 
         {/* About Content */}
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: smoothEase }}
-            className="space-y-6"
+            className="space-y-4 md:space-y-6"
           >
-            <p className="text-xl md:text-2xl leading-relaxed text-foreground">
+            <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
               SkyLine is a platform designed to recognize and showcase what truly makes you unique — 
               your <span className="gold-text font-semibold">non-academic achievements</span>.
             </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
               From sports victories and artistic accomplishments to volunteering efforts and leadership roles, 
               SkyLine helps you build a credible digital identity that goes beyond grades and test scores.
             </p>
@@ -56,36 +56,36 @@ export function AboutSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: smoothEase, delay: 0.2 }}
-            className="space-y-8"
+            className="space-y-6 md:space-y-8"
           >
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-6">
-              <div className="p-6 rounded-2xl border border-border bg-muted/20">
-                <div className="text-4xl font-extrabold gold-text mb-2">0-7</div>
-                <div className="text-sm text-muted-foreground">Star Rating System</div>
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+              <div className="p-4 md:p-6 rounded-xl md:rounded-2xl border border-border bg-muted/20">
+                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">0-7</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Star Rating System</div>
               </div>
-              <div className="p-6 rounded-2xl border border-border bg-muted/20">
-                <div className="text-4xl font-extrabold gold-text mb-2">6+</div>
-                <div className="text-sm text-muted-foreground">Achievement Categories</div>
+              <div className="p-4 md:p-6 rounded-xl md:rounded-2xl border border-border bg-muted/20">
+                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">6+</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Achievement Categories</div>
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl border border-border bg-muted/20">
-              <h3 className="font-semibold text-lg mb-3">How It Works</h3>
-              <ol className="space-y-3 text-muted-foreground">
-                <li className="flex gap-3">
+            <div className="p-4 md:p-6 rounded-xl md:rounded-2xl border border-border bg-muted/20">
+              <h3 className="font-semibold text-base md:text-lg mb-3">How It Works</h3>
+              <ol className="space-y-2 md:space-y-3 text-muted-foreground text-sm md:text-base">
+                <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">1.</span>
                   <span>Create your profile and start logging achievements</span>
                 </li>
-                <li className="flex gap-3">
+                <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">2.</span>
                   <span>Upload proof and get verified by admins</span>
                 </li>
-                <li className="flex gap-3">
+                <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">3.</span>
                   <span>Earn stars, unlock badges, and climb the leaderboard</span>
                 </li>
-                <li className="flex gap-3">
+                <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">4.</span>
                   <span>Share your digital identity with the world</span>
                 </li>
