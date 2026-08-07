@@ -34,7 +34,7 @@ export function HeroSection() {
         <div className="absolute bottom-20 left-1/3 w-48 md:w-64 h-48 md:h-64 bg-accent/5 rounded-full blur-3xl" />
       </motion.div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 flex flex-1 flex-col md:block">
         {/* Massive Typography with clip reveal and parallax */}
         <motion.div style={{ y: textY, opacity }} className="mb-8 md:mb-12 overflow-hidden">
           {/* Mobile: single-line wordmark */}
@@ -98,7 +98,7 @@ export function HeroSection() {
           </a>
         </motion.div>
         {/* Tagline and Status */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start mt-auto mb-12 md:mt-0 md:mb-0">
           <div className="space-y-4 md:space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 40 }}

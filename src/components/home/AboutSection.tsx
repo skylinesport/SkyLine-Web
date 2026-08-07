@@ -45,7 +45,7 @@ Built for <span className="gold-text">Gamers</span>
               Skylinesports is where players register for <span className="gold-text font-semibold">free BGMI, Free Fire, COD &amp; Fortnite tournaments</span>,
               team up, and compete.
             </p>
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+            <p className="hidden md:block text-muted-foreground text-base md:text-lg leading-relaxed">
               Find tournaments, invite players to your squad, build a profile that shows your stats,
               wins and badges — and get your match room details in-app and by SMS, right before you drop in.
             </p>
