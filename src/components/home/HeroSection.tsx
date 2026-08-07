@@ -23,7 +23,7 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section id="top" ref={sectionRef} className="relative min-h-[85vh] md:min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-20 md:pt-24 overflow-hidden">
+    <section id="top" ref={sectionRef} className="relative min-h-[88vh] md:min-h-[90vh] flex flex-col justify-start md:justify-center px-4 md:px-8 lg:px-16 pt-24 md:pt-24 overflow-hidden">
       {/* Parallax Background Elements */}
       <motion.div 
         style={{ y: backgroundY }}
@@ -34,10 +34,20 @@ export function HeroSection() {
         <div className="absolute bottom-20 left-1/3 w-48 md:w-64 h-48 md:h-64 bg-accent/5 rounded-full blur-3xl" />
       </motion.div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 flex flex-1 flex-col md:block">
         {/* Massive Typography with clip reveal and parallax */}
         <motion.div style={{ y: textY, opacity }} className="mb-8 md:mb-12 overflow-hidden">
-          <h1 className="text-[clamp(3rem,12vw,14rem)] font-extrabold leading-[0.85] tracking-tighter uppercase">
+          {/* Mobile: single-line wordmark */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.1 }}
+            className="md:hidden text-[clamp(3rem,20vw,6rem)] font-extrabold leading-[0.9] tracking-tighter uppercase"
+          >
+            SKY<span className="gold-text">LINE</span>
+          </motion.div>
+          {/* Desktop: stacked wordmark */}
+          <h1 className="hidden md:block text-[clamp(4.5rem,12vw,14rem)] font-extrabold leading-[0.85] tracking-tighter uppercase">
             <span className="block overflow-hidden">
               <motion.span
                 className="block"
@@ -88,7 +98,7 @@ export function HeroSection() {
           </a>
         </motion.div>
         {/* Tagline and Status */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start mt-auto mb-12 md:mt-0 md:mb-0">
           <div className="space-y-4 md:space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 40 }}

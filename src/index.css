@@ -267,3 +267,15 @@
     }
   }
 }
+
+/* Hide the vertical scrollbar site-wide (scrolling still works) — desktop + mobile */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge/IE */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+  width: 0;
+  height: 0;
+}
