@@ -37,7 +37,17 @@ export function HeroSection() {
       <div className="container mx-auto relative z-10">
         {/* Massive Typography with clip reveal and parallax */}
         <motion.div style={{ y: textY, opacity }} className="mb-8 md:mb-12 overflow-hidden">
-          <h1 className="text-[clamp(3rem,12vw,14rem)] font-extrabold leading-[0.85] tracking-tighter uppercase">
+          {/* Mobile: single-line wordmark */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.1 }}
+            className="md:hidden text-[clamp(3rem,20vw,6rem)] font-extrabold leading-[0.9] tracking-tighter uppercase"
+          >
+            SKY<span className="gold-text">LINE</span>
+          </motion.div>
+          {/* Desktop: stacked wordmark */}
+          <h1 className="hidden md:block text-[clamp(4.5rem,12vw,14rem)] font-extrabold leading-[0.85] tracking-tighter uppercase">
             <span className="block overflow-hidden">
               <motion.span
                 className="block"
