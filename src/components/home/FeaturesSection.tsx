@@ -7,39 +7,39 @@ const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 const features = [
   {
     icon: Trophy,
-    title: 'Track Everything',
-    description: 'Sports, dance, art, volunteering, leadership - all your non-academic wins in one place.',
-    category: 'Tracking'
-  },
-  {
-    icon: Star,
-    title: 'Earn Stars',
-    description: 'Dynamic 0-7 star rating system based on your verified accomplishments.',
-    category: 'Rating'
-  },
-  {
-    icon: Shield,
-    title: 'Get Verified',
-    description: 'Upload proof and get verified by admins. Verified achievements carry more weight.',
-    category: 'Verification'
-  },
-  {
-    icon: Award,
-    title: 'Unlock Badges',
-    description: 'Earn special badges for milestones and exceptional achievements.',
-    category: 'Rewards'
+    title: 'Free Tournaments',
+    description: 'Register for free BGMI, Free Fire, COD & Fortnite tournaments — solo, duo or squad.',
+    category: 'Tournaments'
   },
   {
     icon: Users,
-    title: 'Compete & Compare',
-    description: 'See how you stack up against others on the leaderboard.',
+    title: 'Team Up',
+    description: 'Invite players to your squad and compete together in a tournament.',
     category: 'Social'
   },
   {
-    icon: Zap,
-    title: 'Digital Identity',
-    description: 'Build a shareable profile showcasing all your accomplishments.',
+    icon: Award,
+    title: 'Decorated Profiles',
+    description: 'Show off your tournaments played, wins, win rate and badges.',
     category: 'Identity'
+  },
+  {
+    icon: Shield,
+    title: 'Room Details On Time',
+    description: 'Get your match Room ID & password in-app and by SMS, 5 minutes before start.',
+    category: 'Match'
+  },
+  {
+    icon: Star,
+    title: 'Discover Players',
+    description: 'Search players, view their profiles, and invite them to team up.',
+    category: 'Discovery'
+  },
+  {
+    icon: Zap,
+    title: 'Premium (soon)',
+    description: 'Unlimited entries and exclusive premium tournaments — coming later.',
+    category: 'Premium'
   }
 ];
 

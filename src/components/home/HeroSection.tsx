@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, type Transition } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/lib/auth';
+import cardBg from '@/assets/card-bg.jpg';
 
 // Smooth easing curve like arestov.design - using cubicBezier
 const smoothTransition: Transition = {
@@ -10,7 +9,6 @@ const smoothTransition: Transition = {
 };
 
 export function HeroSection() {
-  const { user } = useAuth();
   const sectionRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -25,7 +23,7 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <section ref={sectionRef} className="relative min-h-[85vh] md:min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-20 md:pt-24 overflow-hidden">
+    <section id="top" ref={sectionRef} className="relative min-h-[85vh] md:min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-16 pt-20 md:pt-24 overflow-hidden">
       {/* Parallax Background Elements */}
       <motion.div 
         style={{ y: backgroundY }}
@@ -68,26 +66,26 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.4 }}
-          className="flex flex-col border border-border rounded-2xl md:rounded-full overflow-hidden mb-10 md:mb-16"
+          className="flex flex-wrap items-center gap-3 md:gap-4 mb-10 md:mb-16"
         >
-          <a 
-            href="#about" 
-            className="flex-1 py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium hover:bg-muted/50 transition-colors duration-300 border-b md:border-b-0 md:border-r border-border"
+          <a
+            href="#about"
+            className="py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium border border-border rounded-full hover:bg-muted/50 transition-colors duration-300"
           >
-            About & Features
+            About
           </a>
-          <a 
-            href="#leaderboard" 
-            className="flex-1 py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium hover:bg-muted/50 transition-colors duration-300 border-b md:border-b-0 md:border-r border-border"
+          <a
+            href="#features"
+            className="py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium border border-border rounded-full hover:bg-muted/50 transition-colors duration-300"
           >
-            Leaderboard <span className="text-muted-foreground hidden sm:inline">(Top 10)</span>
+            Features
           </a>
-          <Link 
-            to={user ? "/dashboard" : "/auth"} 
-            className="flex-1 py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium hover:bg-muted/50 transition-colors duration-300"
+          <a
+            href="#download"
+            className="py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium border border-border rounded-full hover:bg-muted/50 transition-colors duration-300"
           >
-            {user ? "Dashboard" : "Get Started"}
-          </Link>
+            Get the App
+          </a>
         </motion.div>
         {/* Tagline and Status */}
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
@@ -99,7 +97,7 @@ export function HeroSection() {
               className="flex items-center gap-3"
             >
               <span className="w-2.5 h-2.5 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-xs md:text-sm font-medium">Open for Achievements</span>
+              <span className="text-xs md:text-sm font-medium">Free to enter · BGMI, Free Fire, COD &amp; Fortnite</span>
             </motion.div>
             
             <div className="overflow-hidden">
@@ -109,11 +107,11 @@ export function HeroSection() {
                 transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.7 }}
                 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold leading-tight"
               >
-                Track Your Non-Academic Wins.
+                Register for free tournaments.
                 <br />
-                Build Your Digital Identity.
+                Team up and climb the ranks.
                 <br />
-                <span className="text-muted-foreground">Stand Bold.</span>
+                <span className="text-muted-foreground">Play bold.</span>
               </motion.h2>
             </div>
 
@@ -123,7 +121,7 @@ export function HeroSection() {
               transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.8 }}
               className="flex flex-wrap gap-2 md:gap-3 pt-2 md:pt-4"
             >
-              {['Sports', 'Arts', 'Volunteering', 'Leadership'].map((tag, i) => (
+              {['BGMI', 'Free Fire', 'COD', 'Fortnite'].map((tag, i) => (
                 <motion.span 
                   key={tag}
                   initial={{ opacity: 0, y: 20 }}
@@ -138,15 +136,15 @@ export function HeroSection() {
           </div>
           {/* Featured Achievement Card with Parallax */}
           <motion.div
-            style={{ y: cardY }}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.8 }}
             className="hidden md:block"
           >
-            <Link to={user ? "/dashboard" : "/auth?mode=signup"} className="block group">
-              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30 aspect-[4/3] transition-transform duration-500 group-hover:scale-[1.02]">
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
+            <a href="#download" className="block group md:-translate-y-12">
+              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30 h-[280px] transition-transform duration-500 group-hover:scale-[1.02]">
+                <img src={cardBg} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                 <div className="absolute top-4 right-4">
                   <span className="px-4 py-1.5 bg-foreground text-background text-xs font-semibold rounded-full">
                     JOIN NOW
@@ -156,44 +154,19 @@ export function HeroSection() {
                   <div className="flex items-end justify-between">
                     <div>
                       <h3 className="text-2xl font-bold group-hover:gold-text transition-colors duration-300">
-                        Start Tracking
+                        Enter the Arena
                       </h3>
                       <p className="text-muted-foreground text-sm mt-1">
-                        Achievements / Stars
+                        Tournaments / Wins
                       </p>
-                    </div>
-                    <div className="text-6xl font-extrabold gold-text">
-                      ★
                     </div>
                   </div>
                 </div>
-                {/* Decorative elements with enhanced parallax */}
-                <motion.div 
-                  style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '-20%']) }}
-                  className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/20 rounded-full blur-3xl" 
-                />
-                <motion.div 
-                  style={{ y: useTransform(scrollYProgress, [0, 1], ['0%', '-30%']) }}
-                  className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-primary/30 rounded-full blur-2xl" 
-                />
               </div>
-            </Link>
+            </a>
           </motion.div>
         </div>
       </div>
-      {/* Scroll indicator */}
-      <motion.div
-        style={{ opacity }}
-        className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-2"
-        >
-          <motion.div className="w-1 h-2 bg-muted-foreground/50 rounded-full" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

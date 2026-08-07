@@ -27,7 +27,7 @@ export function AboutSection() {
               transition={{ duration: 1, ease: smoothEase }}
               className="text-[clamp(2rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tighter"
             >
-              Beyond <span className="gold-text">Academics</span>
+Built for <span className="gold-text">Gamers</span>
             </motion.h2>
           </div>
         </div>
@@ -42,12 +42,12 @@ export function AboutSection() {
             className="space-y-4 md:space-y-6"
           >
             <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
-              SkyLine is a platform designed to recognize and showcase what truly makes you unique — 
-              your <span className="gold-text font-semibold">non-academic achievements</span>.
+              Skylinesports is where players register for <span className="gold-text font-semibold">free BGMI, Free Fire, COD &amp; Fortnite tournaments</span>,
+              team up, and compete.
             </p>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              From sports victories and artistic accomplishments to volunteering efforts and leadership roles, 
-              SkyLine helps you build a credible digital identity that goes beyond grades and test scores.
+              Find tournaments, invite players to your squad, build a profile that shows your stats,
+              wins and badges — and get your match room details in-app and by SMS, right before you drop in.
             </p>
           </motion.div>
 
@@ -56,17 +56,17 @@ export function AboutSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: smoothEase, delay: 0.2 }}
-            className="space-y-6 md:space-y-8"
+            className="space-y-6 md:space-y-8 md:-mt-[150px]"
           >
             {/* Stats */}
             <div className="grid grid-cols-2 gap-4 md:gap-6">
               <div className="p-4 md:p-6 rounded-xl md:rounded-2xl border border-border bg-muted/20">
-                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">0-7</div>
-                <div className="text-xs md:text-sm text-muted-foreground">Star Rating System</div>
+                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">Free</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Entry to every tournament</div>
               </div>
               <div className="p-4 md:p-6 rounded-xl md:rounded-2xl border border-border bg-muted/20">
-                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">6+</div>
-                <div className="text-xs md:text-sm text-muted-foreground">Achievement Categories</div>
+                <div className="text-2xl md:text-4xl font-extrabold gold-text mb-1 md:mb-2">4+</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Games — BGMI, Free Fire, COD, Fortnite</div>
               </div>
             </div>
 
@@ -75,19 +75,19 @@ export function AboutSection() {
               <ol className="space-y-2 md:space-y-3 text-muted-foreground text-sm md:text-base">
                 <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">1.</span>
-                  <span>Create your profile and start logging achievements</span>
+                  <span>Sign up with your phone number</span>
                 </li>
                 <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">2.</span>
-                  <span>Upload proof and get verified by admins</span>
+                  <span>Find a free tournament and register</span>
                 </li>
                 <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">3.</span>
-                  <span>Earn stars, unlock badges, and climb the leaderboard</span>
+                  <span>Team up with players or go solo</span>
                 </li>
                 <li className="flex gap-2 md:gap-3">
                   <span className="text-primary font-bold">4.</span>
-                  <span>Share your digital identity with the world</span>
+                  <span>Play, win, and climb the ranks</span>
                 </li>
               </ol>
             </div>
