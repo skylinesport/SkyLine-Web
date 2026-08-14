@@ -16,9 +16,9 @@
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
 
-    /* Cool blue/silver accent */
-    --primary: 210 100% 60%;
-    --primary-foreground: 0 0% 0%;
+    /* Acid lime accent — #B8F03C, dark #1D2A05 text on lime */
+    --primary: 79 86% 59%;
+    --primary-foreground: 82 74% 9%;
 
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
@@ -26,47 +26,49 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 55%;
 
-    --accent: 220 90% 65%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 79 86% 59%;
+    --accent-foreground: 82 74% 9%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    /* Coral destructive — #FF5C7A */
+    --destructive: 348 100% 68%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 0 0% 15%;
     --input: 0 0% 12%;
-    --ring: 210 100% 60%;
+    --ring: 79 86% 59%;
 
     --radius: 0.75rem;
 
-    /* Custom colors - replaced gold with cool blue */
-    --gold: 210 100% 60%;
-    --gold-light: 210 100% 70%;
-    --gold-dark: 210 100% 45%;
+    /* Brand-accent scale (legacy "gold" var name; now acid lime) */
+    --gold: 79 86% 59%;
+    --gold-light: 79 86% 71%;
+    --gold-dark: 79 86% 45%;
     --navy-light: 0 0% 10%;
     --navy-dark: 0 0% 2%;
-    --success: 142 76% 36%;
+    /* Success removed — neutral (a mint next to lime is ambiguous) */
+    --success: 0 0% 55%;
     --warning: 38 92% 50%;
 
-    /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(210 100% 60%), hsl(220 100% 70%));
+    /* Flat fills only — no accent gradients/washes/glows */
+    --gradient-gold: hsl(79 86% 59%);
     --gradient-navy: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 2%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 8%), hsl(0 0% 4%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(220 30% 5%) 50%, hsl(0 0% 0%) 100%);
+    --gradient-card: hsl(0 0% 5%);
+    --gradient-hero: hsl(0 0% 0%);
 
-    /* Shadows */
-    --shadow-gold: 0 4px 20px -4px hsl(210 100% 60% / 0.3);
+    /* Shadows — neutral, no coloured accent glow */
+    --shadow-gold: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
     --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
     --shadow-elevated: 0 20px 40px -16px hsl(0 0% 0% / 0.7);
 
     /* Sidebar */
     --sidebar-background: 0 0% 5%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 210 100% 60%;
-    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-primary: 79 86% 59%;
+    --sidebar-primary-foreground: 82 74% 9%;
     --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 210 100% 60%;
+    --sidebar-ring: 79 86% 59%;
   }
 
   .light {
@@ -79,8 +81,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
 
-    --primary: 210 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 79 72% 42%;
+    --primary-foreground: 82 74% 9%;
 
     --secondary: 220 14% 96%;
     --secondary-foreground: 0 0% 11%;
@@ -88,39 +90,39 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
 
-    --accent: 220 90% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 79 72% 42%;
+    --accent-foreground: 82 74% 9%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 348 100% 68%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 210 100% 50%;
+    --ring: 79 72% 42%;
 
-    --gold: 210 100% 50%;
-    --gold-light: 210 100% 60%;
-    --gold-dark: 210 100% 40%;
+    --gold: 79 72% 42%;
+    --gold-light: 79 72% 52%;
+    --gold-dark: 79 72% 34%;
     --navy-light: 220 14% 96%;
     --navy-dark: 0 0% 11%;
 
-    --gradient-gold: linear-gradient(135deg, hsl(210 100% 50%), hsl(220 100% 60%));
+    --gradient-gold: hsl(79 72% 42%);
     --gradient-navy: linear-gradient(180deg, hsl(0 0% 98%), hsl(220 14% 96%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 14% 96%));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(220 20% 96%) 50%, hsl(0 0% 98%) 100%);
+    --gradient-card: hsl(0 0% 100%);
+    --gradient-hero: hsl(0 0% 98%);
 
-    --shadow-gold: 0 4px 20px -4px hsl(210 100% 50% / 0.2);
+    --shadow-gold: 0 4px 20px -4px hsl(0 0% 0% / 0.12);
     --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.1);
     --shadow-elevated: 0 20px 40px -16px hsl(0 0% 0% / 0.15);
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 11%;
-    --sidebar-primary: 210 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 79 72% 42%;
+    --sidebar-primary-foreground: 82 74% 9%;
     --sidebar-accent: 220 14% 96%;
     --sidebar-accent-foreground: 0 0% 11%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 210 100% 50%;
+    --sidebar-ring: 79 72% 42%;
   }
 }
 
@@ -170,18 +172,15 @@
   }
 
   .gold-gradient {
-    background: var(--gradient-gold);
+    background: hsl(var(--primary));
   }
 
   .gold-text {
-    background: var(--gradient-gold);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: hsl(var(--primary));
   }
 
   .star-glow {
-    filter: drop-shadow(0 0 8px hsl(var(--gold) / 0.6));
+    /* flat — no accent glow */
   }
 
   .badge-shimmer {
@@ -199,7 +198,7 @@
     background: linear-gradient(
       45deg,
       transparent 30%,
-      hsl(var(--gold) / 0.1) 50%,
+      hsl(0 0% 100% / 0.06) 50%,
       transparent 70%
     );
     animation: shimmer 3s infinite;
@@ -247,10 +246,10 @@
 
   @keyframes pulse-gold {
     0%, 100% {
-      box-shadow: 0 0 0 0 hsl(var(--gold) / 0.4);
+      opacity: 1;
     }
     50% {
-      box-shadow: 0 0 0 12px hsl(var(--gold) / 0);
+      opacity: 0.6;
     }
   }
 

@@ -40,7 +40,7 @@ export function LeaderboardCard({
       className={cn(
         "glass-card p-4 cursor-pointer transition-all",
         isTopThree && "border-2",
-        rank === 1 && "border-[#FFD700]/50 animate-glow-pulse"
+        rank === 1 && "border-[#FFD700]/50"
       )}
       style={isTopThree ? { borderColor: `${rankConfig[rank].color}50` } : {}}
     >

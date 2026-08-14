@@ -25,14 +25,10 @@ export function HeroSection() {
   return (
     <section id="top" ref={sectionRef} className="relative min-h-[88vh] md:min-h-[90vh] flex flex-col justify-start md:justify-center px-4 md:px-8 lg:px-16 pt-24 md:pt-24 overflow-hidden">
       {/* Parallax Background Elements */}
-      <motion.div 
+      <motion.div
         style={{ y: backgroundY }}
         className="absolute inset-0 pointer-events-none"
-      >
-        <div className="absolute top-20 left-4 md:left-10 w-48 md:w-72 h-48 md:h-72 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute top-40 right-4 md:right-20 w-64 md:w-96 h-64 md:h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-1/3 w-48 md:w-64 h-48 md:h-64 bg-accent/5 rounded-full blur-3xl" />
-      </motion.div>
+      />
 
       <div className="container mx-auto relative z-10 flex flex-1 flex-col md:block">
         {/* Massive Typography with clip reveal and parallax */}
@@ -106,7 +102,7 @@ export function HeroSection() {
               transition={{ duration: 0.8, ease: [0.6, 0.01, 0.05, 0.95] as [number, number, number, number], delay: 0.6 }}
               className="flex items-center gap-3"
             >
-              <span className="w-2.5 h-2.5 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse" />
+              <span className="w-2.5 h-2.5 md:w-3 md:h-3 bg-primary rounded-full animate-pulse" />
               <span className="text-xs md:text-sm font-medium">Free to enter · BGMI, Free Fire, COD &amp; Fortnite</span>
             </motion.div>
             
@@ -152,7 +148,7 @@ export function HeroSection() {
             className="hidden md:block"
           >
             <a href="#download" className="block group md:-translate-y-12">
-              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/30 h-[280px] transition-transform duration-500 group-hover:scale-[1.02]">
+              <div className="relative rounded-2xl overflow-hidden bg-white/[0.045] border border-primary/35 h-[280px] transition-transform duration-500 group-hover:scale-[1.02]">
                 <img src={cardBg} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                 <div className="absolute top-4 right-4">

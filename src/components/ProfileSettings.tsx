@@ -22,7 +22,7 @@ interface ProfileSettingsProps {
 }
 
 const THEME_COLORS = [
-  '#8B5CF6', // Purple
+  '#B8F03C', // Lime (brand accent)
   '#3B82F6', // Blue
   '#10B981', // Green
   '#F59E0B', // Amber
@@ -39,7 +39,7 @@ export function ProfileSettings({ profile }: ProfileSettingsProps) {
   const [form, setForm] = useState({
     full_name: profile.full_name || '',
     bio: profile.bio || '',
-    theme_color: profile.theme_color || '#8B5CF6',
+    theme_color: profile.theme_color || '#B8F03C',
     about: profile.about || '',
     skills: profile.skills || [],
     interests: profile.interests || [],

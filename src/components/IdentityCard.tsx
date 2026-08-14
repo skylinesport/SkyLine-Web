@@ -47,7 +47,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
           aspectRatio: '1.586/1', // Standard card ratio
           borderRadius: '12px',
           background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 60px rgba(59, 130, 246, 0.1)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
         }}
       >
         {/* Diagonal Stripe Pattern */}
@@ -104,9 +104,8 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
             </p>
             <p 
               className="text-base md:text-xl font-mono font-semibold tracking-[0.1em]"
-              style={{ 
+              style={{
                 color: '#ffffff',
-                textShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
               }}
             >
               {userCode}
@@ -130,7 +129,7 @@ export function IdentityCard({ name, userCode, starRating, totalAchievements }: 
                 </p>
                 <p 
                   className="text-xs md:text-sm font-bold"
-                  style={{ color: '#60a5fa' }}
+                  style={{ color: '#CBF573' }}
                 >
                   {starRating.toFixed(1)}★
                 </p>

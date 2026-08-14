@@ -42,8 +42,8 @@ const emailStyles = {
   },
   button: {
     display: 'inline-block',
-    backgroundColor: '#3b82f6',
-    color: '#ffffff',
+    backgroundColor: '#B8F03C',
+    color: '#1D2A05',
     padding: '14px 32px',
     borderRadius: '8px',
     textDecoration: 'none',
@@ -102,7 +102,7 @@ function VerificationEmail() {
         <p style={emailStyles.text}>
           Or copy and paste this link into your browser:
         </p>
-        <p style={{ ...emailStyles.text, wordBreak: 'break-all', color: '#3b82f6' }}>
+        <p style={{ ...emailStyles.text, wordBreak: 'break-all', color: '#1D2A05' }}>
           https://skyline.app/auth/verify?token=abc123...
         </p>
         <p style={emailStyles.muted}>

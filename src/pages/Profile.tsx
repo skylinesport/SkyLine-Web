@@ -100,7 +100,7 @@ export default function Profile() {
   };
 
   const isOwnProfile = user?.id === profile?.id;
-  const themeColor = profile?.theme_color || '#8B5CF6';
+  const themeColor = profile?.theme_color || '#B8F03C';
 
   if (profileLoading) {
     return (
