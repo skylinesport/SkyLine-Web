@@ -42,7 +42,7 @@ Built for <span className="gold-text">Gamers</span>
             className="space-y-4 md:space-y-6"
           >
             <p className="text-lg md:text-xl lg:text-2xl leading-relaxed text-foreground">
-              Skylinesports is where players register for <span className="gold-text font-semibold">free BGMI, Free Fire, COD &amp; Fortnite tournaments</span>,
+              Skylinesport is where players register for <span className="gold-text font-semibold">free BGMI, Free Fire, COD &amp; Fortnite tournaments</span>,
               team up, and compete.
             </p>
             <p className="hidden md:block text-muted-foreground text-base md:text-lg leading-relaxed">
