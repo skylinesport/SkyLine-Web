@@ -50,7 +50,7 @@ export function Navbar() {
             className="absolute left-1/2 -translate-x-1/2"
           >
             <Link to="/" onClick={closeMenu}>
-              <img src={logo} alt="Skylinesports" className="h-7 md:h-8 w-auto dark:invert" />
+              <img src={logo} alt="Skylinesport" className="h-7 md:h-8 w-auto dark:invert" />
             </Link>
           </motion.div>
 
@@ -105,7 +105,7 @@ export function Navbar() {
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-border">
                   <Link to="/" onClick={closeMenu}>
-                    <img src={logo} alt="Skylinesports" className="h-7 w-auto dark:invert" />
+                    <img src={logo} alt="Skylinesport" className="h-7 w-auto dark:invert" />
                   </Link>
                   <button onClick={closeMenu} className="p-2 text-foreground">
                     <X className="w-5 h-5" />

@@ -175,7 +175,7 @@ export function Footer() {
               <img src={logo} alt="SkyLine" className="h-8 md:h-10 w-auto dark:invert" />
             </Link>
             <p className="text-xs md:text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Skylinesports
+              © {new Date().getFullYear()} Skylinesport
             </p>
             <p className="text-xs md:text-sm text-muted-foreground">
               All rights reserved
