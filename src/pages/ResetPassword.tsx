@@ -11,8 +11,9 @@ import { toast } from 'sonner';
 
 // The reset token + confirm endpoint live on the app's (NestJS) API, not
 // Supabase — this page is the landing for the password-reset email the app
-// sends. Point VITE_API_URL at that backend (e.g. the Railway URL).
-const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ?? '';
+// sends. Override with VITE_API_URL; falls back to the live backend so the
+// reset flow works even if the env var isn't set in the deployment.
+const API_URL = ((import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.skylinesport.in').replace(/\/$/, '');
 
 const schema = z
   .object({
