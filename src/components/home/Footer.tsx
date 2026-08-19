@@ -180,6 +180,14 @@ export function Footer() {
             <p className="text-xs md:text-sm text-muted-foreground">
               All rights reserved
             </p>
+            <div className="mt-3 flex gap-4 md:justify-end text-xs md:text-sm">
+              <Link to="/terms" className="text-muted-foreground transition-colors hover:text-foreground">
+                Terms
+              </Link>
+              <Link to="/privacy" className="text-muted-foreground transition-colors hover:text-foreground">
+                Privacy
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

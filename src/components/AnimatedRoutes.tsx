@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from './PageTransition';
 import Index from '@/pages/Index';
 import ResetPassword from '@/pages/ResetPassword';
+import Terms from '@/pages/Terms';
+import Privacy from '@/pages/Privacy';
 import NotFound from '@/pages/NotFound';
 
 export function AnimatedRoutes() {
@@ -24,6 +26,22 @@ export function AnimatedRoutes() {
           element={
             <PageTransition>
               <ResetPassword />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/terms"
+          element={
+            <PageTransition>
+              <Terms />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/privacy"
+          element={
+            <PageTransition>
+              <Privacy />
             </PageTransition>
           }
         />
