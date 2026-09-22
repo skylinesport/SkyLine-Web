@@ -5,6 +5,7 @@ import Index from '@/pages/Index';
 import ResetPassword from '@/pages/ResetPassword';
 import Terms from '@/pages/Terms';
 import Privacy from '@/pages/Privacy';
+import DeleteAccount from '@/pages/DeleteAccount';
 import NotFound from '@/pages/NotFound';
 
 export function AnimatedRoutes() {
@@ -42,6 +43,14 @@ export function AnimatedRoutes() {
           element={
             <PageTransition>
               <Privacy />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/delete-account"
+          element={
+            <PageTransition>
+              <DeleteAccount />
             </PageTransition>
           }
         />
