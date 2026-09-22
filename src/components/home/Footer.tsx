@@ -187,6 +187,9 @@ export function Footer() {
               <Link to="/privacy" className="text-muted-foreground transition-colors hover:text-foreground">
                 Privacy
               </Link>
+              <Link to="/delete-account" className="text-muted-foreground transition-colors hover:text-foreground">
+                Delete account
+              </Link>
             </div>
           </motion.div>
         </div>
