@@ -2,6 +2,7 @@ import { Navbar } from '@/components/home/Navbar';
 import { HeroSection } from '@/components/home/HeroSection';
 import { AboutSection } from '@/components/home/AboutSection';
 import { FeaturesSection } from '@/components/home/FeaturesSection';
+import { CommunitySection } from '@/components/home/CommunitySection';
 import { Footer } from '@/components/home/Footer';
 
 export default function Index() {
@@ -11,6 +12,7 @@ export default function Index() {
       <HeroSection />
       <AboutSection />
       <FeaturesSection />
+      <CommunitySection />
       <Footer />
     </div>
   );
