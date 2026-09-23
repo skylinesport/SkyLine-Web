@@ -16,12 +16,11 @@ const APP_STORE_URL = '#';
 // Player reviews shown in the scrolling marquee below. Placeholder content for
 // now — swap in real player reviews (and photos) before/at launch.
 const REVIEWS: { name: string; game: string; initials: string; quote: string }[] = [
-  { name: 'Arjun R.', game: 'BGMI', initials: 'AR', quote: 'Free tournaments that actually pay out. Registered in seconds.' },
-  { name: 'Neha S.', game: 'Free Fire', initials: 'NS', quote: 'Found a squad and climbed the ranks in a week.' },
-  { name: 'Kabir M.', game: 'BGMI', initials: 'KM', quote: 'No entry fee, real prizes. The leaderboard keeps me grinding.' },
-  { name: 'Priya T.', game: 'Free Fire', initials: 'PT', quote: 'Team-up invites make finding teammates so easy.' },
-  { name: 'Rohit V.', game: 'BGMI', initials: 'RV', quote: 'Clean UI and weekly matches — exactly what I wanted.' },
-  { name: 'Sana K.', game: 'Free Fire', initials: 'SK', quote: 'Won my first reward last week. Hooked already.' },
+  { name: 'Ayush', game: 'BGMI', initials: 'AY', quote: 'Free tournaments that actually pay out. Registered in seconds.' },
+  { name: 'Pooja', game: 'Free Fire', initials: 'PO', quote: 'Found a squad and climbed the ranks in a week.' },
+  { name: 'Siddhi', game: 'BGMI', initials: 'SI', quote: 'No entry fee, real prizes. The leaderboard keeps me grinding.' },
+  { name: 'Amisha', game: 'Free Fire', initials: 'AM', quote: 'Team-up invites make finding teammates so easy.' },
+  { name: 'Abhishek', game: 'BGMI', initials: 'AB', quote: 'Clean UI and weekly matches — exactly what I wanted.' },
 ];
 
 // Rating + Downloads. NOTE: placeholder values — there are no real ratings or
@@ -114,7 +113,7 @@ export function CommunitySection() {
             className="mb-8 flex items-center gap-3 rounded-full border border-border bg-muted/30 py-2 pl-2 pr-5"
           >
             <div className="flex -space-x-2">
-              {['AR', 'NS', 'KM'].map((i) => (
+              {['AY', 'PO', 'SI'].map((i) => (
                 <Avatar key={i} initials={i} className="h-7 w-7 text-[10px] ring-2 ring-background" />
               ))}
             </div>
