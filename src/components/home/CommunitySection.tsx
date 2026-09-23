@@ -23,11 +23,11 @@ const FACES = [
 // Shape: { name: 'Arjun R.', game: 'BGMI', initials: 'AR', quote: '…' }
 const REVIEWS: { name: string; game: string; initials: string; quote: string }[] = [];
 
-// Honest, concrete facts only — no ratings/counts until they're real.
-const STATS = [
-  { value: 'Free', label: 'To Enter' },
-  { value: 'Weekly', label: 'Tournaments' },
-  { value: '4', label: 'Games' },
+// Rating + Downloads. NOTE: placeholder values — there are no real ratings or
+// downloads until the app is live. Set real numbers before this goes public.
+const STATS: { value?: string; label: string; stars?: boolean }[] = [
+  { label: 'Play Store Rating', stars: true }, // TODO: real rating at launch
+  { value: '1,000+', label: 'Downloads' },     // TODO: real count at launch
 ];
 
 function Avatar({ initials, className = '' }: { initials: string; className?: string }) {
@@ -138,11 +138,19 @@ export function CommunitySection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.8, ease, delay: 0.4 }}
-            className="mt-16 grid w-full grid-cols-3 gap-8 border-t border-border pt-10"
+            className="mx-auto mt-16 grid w-full max-w-md grid-cols-2 gap-8 border-t border-border pt-10"
           >
             {STATS.map((s) => (
               <div key={s.label} className="flex flex-col items-center">
-                <span className="text-3xl font-extrabold tracking-tight md:text-4xl">{s.value}</span>
+                {s.stars ? (
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-primary text-primary" />
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-3xl font-extrabold tracking-tight md:text-4xl">{s.value}</span>
+                )}
                 <span className="mt-2 text-sm font-medium text-muted-foreground">{s.label}</span>
               </div>
             ))}
