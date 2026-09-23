@@ -9,19 +9,16 @@ const ease = [0.6, 0.01, 0.05, 0.95] as [number, number, number, number];
 const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=in.skylinesport.app';
 
-// Decorative floating avatars (initials-based — no external images, matches the
-// app's own initials avatars). Desktop only; hidden on mobile.
-const FACES = [
-  { initials: 'AR', pos: 'top-4 left-[7%]', size: 'h-16 w-16 text-lg', delay: 0.1 },
-  { initials: 'NS', pos: 'top-20 right-[9%]', size: 'h-20 w-20 text-xl', delay: 0.2 },
-  { initials: 'KM', pos: 'bottom-8 left-[13%]', size: 'h-14 w-14 text-base', delay: 0.3 },
-  { initials: 'PT', pos: 'bottom-16 right-[15%]', size: 'h-16 w-16 text-lg', delay: 0.4 },
+// Player reviews shown in the scrolling marquee below. Placeholder content for
+// now — swap in real player reviews (and photos) before/at launch.
+const REVIEWS: { name: string; game: string; initials: string; quote: string }[] = [
+  { name: 'Arjun R.', game: 'BGMI', initials: 'AR', quote: 'Free tournaments that actually pay out. Registered in seconds.' },
+  { name: 'Neha S.', game: 'Free Fire', initials: 'NS', quote: 'Found a squad and climbed the ranks in a week.' },
+  { name: 'Kabir M.', game: 'BGMI', initials: 'KM', quote: 'No entry fee, real prizes. The leaderboard keeps me grinding.' },
+  { name: 'Priya T.', game: 'Free Fire', initials: 'PT', quote: 'Team-up invites make finding teammates so easy.' },
+  { name: 'Rohit V.', game: 'BGMI', initials: 'RV', quote: 'Clean UI and weekly matches — exactly what I wanted.' },
+  { name: 'Sana K.', game: 'Free Fire', initials: 'SK', quote: 'Won my first reward last week. Hooked already.' },
 ];
-
-// Real player reviews go here — the cards below render automatically once this
-// has entries. Empty until we have genuine reviews (no fabricated testimonials).
-// Shape: { name: 'Arjun R.', game: 'BGMI', initials: 'AR', quote: '…' }
-const REVIEWS: { name: string; game: string; initials: string; quote: string }[] = [];
 
 // Rating + Downloads. NOTE: placeholder values — there are no real ratings or
 // downloads until the app is live. Set real numbers before this goes public.
@@ -53,20 +50,6 @@ export function CommunitySection() {
       </div>
 
       <div className="container relative z-10 mx-auto">
-        {/* Floating avatars — decorative, desktop only */}
-        {FACES.map((f) => (
-          <motion.div
-            key={f.initials}
-            initial={{ opacity: 0, scale: 0.6 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, ease, delay: f.delay }}
-            className={`absolute z-0 hidden md:flex ${f.pos}`}
-          >
-            <Avatar initials={f.initials} className={`${f.size} shadow-xl shadow-primary/10`} />
-          </motion.div>
-        ))}
-
         {/* Centered hero content */}
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
           {/* Social-proof pill */}
@@ -157,35 +140,37 @@ export function CommunitySection() {
           </motion.div>
         </div>
 
-        {/* Review cards — render only once there are real reviews */}
-        {REVIEWS.length > 0 && (
-        <div className="relative z-10 mt-20 grid gap-6 md:grid-cols-3">
-          {REVIEWS.map((r, i) => (
-            <motion.div
-              key={r.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, ease, delay: 0.1 * i }}
-              className="rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm"
+      </div>
+
+      {/* Moving reviews marquee — full-bleed, continuous horizontal scroll */}
+      <div className="relative z-10 mt-20 -mx-4 overflow-hidden md:-mx-8 lg:-mx-16">
+        <motion.div
+          className="flex w-max"
+          initial={{ x: '0%' }}
+          animate={{ x: '-50%' }}
+          transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
+        >
+          {[...REVIEWS, ...REVIEWS].map((r, i) => (
+            <div
+              key={i}
+              className="mr-4 flex w-[300px] shrink-0 items-center gap-3 rounded-2xl border border-border bg-card/50 px-5 py-4"
             >
-              <div className="mb-4 flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className="h-4 w-4 fill-primary text-primary" />
-                ))}
-              </div>
-              <p className="text-sm leading-relaxed text-foreground/90">"{r.quote}"</p>
-              <div className="mt-6 flex items-center gap-3">
-                <Avatar initials={r.initials} className="h-10 w-10 text-sm" />
-                <div>
-                  <p className="text-sm font-semibold">{r.name}</p>
-                  <p className="text-xs text-muted-foreground">{r.game}</p>
+              <Avatar initials={r.initials} className="h-11 w-11 shrink-0 text-sm" />
+              <div className="min-w-0">
+                <div className="flex items-baseline gap-1.5">
+                  <p className="truncate text-sm font-semibold">{r.name}</p>
+                  <span className="shrink-0 text-xs text-muted-foreground">· {r.game}</span>
                 </div>
+                <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted-foreground">
+                  "{r.quote}"
+                </p>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </div>
-        )}
+        </motion.div>
+        {/* Soft edge fades so cards ease in/out instead of hard-cutting */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent md:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent md:w-28" />
       </div>
     </section>
   );
