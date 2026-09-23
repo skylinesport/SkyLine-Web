@@ -91,7 +91,7 @@ export function HeroSection() {
             Features
           </a>
           <a
-            href="#download"
+            href="#community"
             className="py-3 md:py-4 px-6 md:px-8 text-center text-sm md:text-base font-medium border border-border rounded-full hover:bg-muted/50 transition-colors duration-300"
           >
             Get the App
