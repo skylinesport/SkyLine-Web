@@ -65,7 +65,7 @@ export function Navbar() {
               Features
             </a>
             <ThemeToggle />
-            <a href="#download">
+            <a href="#community">
               <Button variant="ghost" size="sm" className="font-medium">
                 Get the App
               </Button>
@@ -139,7 +139,7 @@ export function Navbar() {
 
                 {/* Bottom Actions */}
                 <div className="p-4 border-t border-border space-y-3">
-                  <a href="#download" onClick={closeMenu} className="block">
+                  <a href="#community" onClick={closeMenu} className="block">
                     <Button className="w-full" size="lg">
                       Get the App
                     </Button>
