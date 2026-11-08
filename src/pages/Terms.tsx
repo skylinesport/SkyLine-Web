@@ -67,6 +67,14 @@ export default function Terms() {
           We may remove content and suspend or terminate accounts that break these rules, with or
           without notice.
         </p>
+        <p>
+          <strong>Zero tolerance for objectionable content and abusive behaviour.</strong>{' '}
+          Skylinesports has no tolerance for objectionable content or abusive users. You can{' '}
+          <strong>report</strong> objectionable content or abusive behaviour, and <strong>block</strong>{' '}
+          any user, at any time from within the app — using the menu on a player&rsquo;s profile or
+          chat, or from Settings. We review every report and act within 24 hours, removing the content
+          and ejecting the user who provided it where warranted.
+        </p>
       </Section>
 
       <Section title="5. Subscriptions and payments">
