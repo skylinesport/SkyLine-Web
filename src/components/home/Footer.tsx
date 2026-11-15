@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import logo from '@/assets/logo.png';
+import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/appLinks';
 
 // Smooth easing curve matching the site's motion design
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
@@ -81,7 +82,25 @@ export function Footer() {
             </div>
           </a>
           <p className="text-muted-foreground text-sm md:text-base mt-4">
-            Coming soon to the App Store &amp; Google Play.
+            Now available on the{' '}
+            <a
+              href={APP_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
+              App Store
+            </a>{' '}
+            &amp;{' '}
+            <a
+              href={PLAY_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
+              Google Play
+            </a>
+            .
           </p>
         </div>
 

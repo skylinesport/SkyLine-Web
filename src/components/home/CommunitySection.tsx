@@ -1,17 +1,10 @@
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 
+import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/appLinks';
+
 // Matches the site's easing curve (see HeroSection / Footer).
 const ease = [0.6, 0.01, 0.05, 0.95] as [number, number, number, number];
-
-// The canonical Play Store URL for the app. It 404s until the listing is live,
-// then resolves automatically — no change needed at launch.
-const PLAY_STORE_URL =
-  'https://play.google.com/store/apps/details?id=in.skylinesport.app';
-
-// App Store link — placeholder until iOS ships. Point this at the backend
-// redirect (or the real App Store URL) later. '#' keeps the badge inert for now.
-const APP_STORE_URL = '#';
 
 // Player reviews shown in the scrolling marquee below. Placeholder content for
 // now — swap in real player reviews (and photos) before/at launch.
@@ -156,7 +149,6 @@ export function CommunitySection() {
               glyph={AppleGlyph}
               line1="Download on the"
               line2="App Store"
-              disabled
             />
             <StoreBadge href={PLAY_STORE_URL} glyph={PlayGlyph} line1="GET IT ON" line2="Google Play" />
           </motion.div>
