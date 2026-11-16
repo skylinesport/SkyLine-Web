@@ -5,9 +5,10 @@ import { ArrowLeft, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
 import logo from '@/assets/logo.png';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
+import { VanishInput } from '@/components/ui/vanish-input';
+import { Footer } from '@/components/home/Footer';
 
 const ease: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 const CAMPUS_EMAIL = 'support@skylinesport.in';
@@ -72,6 +73,7 @@ function MarqueeRow({ items, reverse }: { items: Ambassador[]; reverse?: boolean
 
 export default function Ambassadors() {
   const [form, setForm] = useState({ name: '', email: '', college: '' });
+  const [vanishSignal, setVanishSignal] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,8 +89,12 @@ export default function Ambassadors() {
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nCollege: ${form.college}\n\nI'd like to become a SkyLinEsport campus ambassador.`,
     );
-    window.location.href = `mailto:${CAMPUS_EMAIL}?subject=${subject}&body=${body}`;
+    // Trigger the vanish animation, then open the email a beat later.
+    setVanishSignal((s) => s + 1);
     toast.success('Opening your email to send the application…');
+    setTimeout(() => {
+      window.location.href = `mailto:${CAMPUS_EMAIL}?subject=${subject}&body=${body}`;
+    }, 900);
   };
 
   return (
@@ -103,17 +109,21 @@ export default function Ambassadors() {
           <Link to="/" className="absolute left-1/2 -translate-x-1/2">
             <img src={logo} alt="SkyLinEsport" className="h-7 w-auto dark:invert" />
           </Link>
-          <ThemeToggle />
+          <span className="w-12" aria-hidden="true" />
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative px-4 pb-10 pt-20 text-center md:px-8 md:pb-14 md:pt-28 lg:px-16">
+      <section className="relative overflow-hidden px-4 pb-10 pt-20 text-center md:px-8 md:pb-14 md:pt-28 lg:px-16">
+        {/* soft glow behind the interactive ripple grid */}
         <div
           className="pointer-events-none absolute left-1/2 top-24 h-72 w-[560px] max-w-[90vw] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]"
           aria-hidden="true"
         />
-        <div className="container relative z-10 mx-auto flex flex-col items-center">
+        {/* interactive ripple grid — click the cells */}
+        <BackgroundRippleEffect rows={9} />
+
+        <div className="pointer-events-none container relative z-10 mx-auto flex flex-col items-center">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -177,30 +187,33 @@ export default function Ambassadors() {
           <form onSubmit={handleSubmit} className="mt-8 space-y-5 rounded-2xl border border-border bg-card/40 p-6 md:p-8">
             <div className="space-y-2">
               <Label htmlFor="name" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Name</Label>
-              <Input
+              <VanishInput
                 id="name"
-                placeholder="Your full name"
+                placeholders={['Your full name', 'What should we call you?', 'e.g. your gamertag + name']}
                 value={form.name}
-                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                onChange={(v) => setForm((f) => ({ ...f, name: v }))}
+                vanishSignal={vanishSignal}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Email</Label>
-              <Input
+              <VanishInput
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholders={['you@example.com', 'Your college email', 'Where can we reach you?']}
                 value={form.email}
-                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                onChange={(v) => setForm((f) => ({ ...f, email: v }))}
+                vanishSignal={vanishSignal}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="college" className="font-term text-xs uppercase tracking-widest text-muted-foreground">College</Label>
-              <Input
+              <VanishInput
                 id="college"
-                placeholder="Your college / university"
+                placeholders={['Your college / university', 'Where do you study?', 'e.g. your campus name']}
                 value={form.college}
-                onChange={(e) => setForm((f) => ({ ...f, college: e.target.value }))}
+                onChange={(v) => setForm((f) => ({ ...f, college: v }))}
+                vanishSignal={vanishSignal}
               />
             </div>
             <Button type="submit" className="w-full font-display uppercase tracking-[0.15em]" size="lg">
@@ -216,15 +229,7 @@ export default function Ambassadors() {
         </div>
       </section>
 
-      <div className="border-t border-border py-10 text-center">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 font-term text-xs uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
-      </div>
+      <Footer />
     </div>
   );
 }

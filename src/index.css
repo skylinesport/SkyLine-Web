@@ -431,3 +431,17 @@ body::-webkit-scrollbar {
 @media (prefers-reduced-motion: reduce) {
   .grain-overlay { animation: none; }
 }
+
+/* ---- Background ripple grid (ambassadors hero) ---- */
+@keyframes cell-ripple {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+  100% { opacity: 0.4; }
+}
+.animate-cell-ripple {
+  animation: cell-ripple var(--duration, 200ms) ease-out var(--delay, 0ms);
+}
+.ripple-grid-mask {
+  -webkit-mask-image: radial-gradient(ellipse 85% 78% at 50% 0%, #000 8%, transparent 72%);
+  mask-image: radial-gradient(ellipse 85% 78% at 50% 0%, #000 8%, transparent 72%);
+}

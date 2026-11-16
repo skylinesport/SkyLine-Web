@@ -110,7 +110,7 @@ export function CommunitySection() {
                 <Avatar key={i} initials={i} className="h-7 w-7 text-[10px] ring-2 ring-background" />
               ))}
             </div>
-            <span className="font-term text-xs uppercase tracking-widest">Be one of the first players</span>
+            <span className="font-term text-xs uppercase tracking-widest">Players are already competing</span>
           </motion.div>
 
           {/* Headline */}

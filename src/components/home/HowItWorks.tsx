@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import { UserPlus, Gamepad2, Users, Radio } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 
-const steps = [
+const steps: { icon: LucideIcon; title: string; description: string }[] = [
   {
     icon: UserPlus,
     title: 'Register free',
@@ -28,20 +29,27 @@ const steps = [
 
 const container = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
 };
-
 const item = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: smoothEase } },
 };
+
+function Node({ Icon }: { Icon: LucideIcon }) {
+  return (
+    <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-[0_0_24px_-8px_hsl(var(--gold)/0.6)]">
+      <Icon className="h-5 w-5" />
+    </div>
+  );
+}
 
 export function HowItWorks() {
   return (
     <section id="how" className="py-16 md:py-24 px-4 md:px-8 lg:px-16 border-t border-border">
       <div className="container mx-auto">
         {/* Section header */}
-        <div className="mb-10 md:mb-16">
+        <div className="mb-12 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -66,38 +74,53 @@ export function HowItWorks() {
           </div>
         </div>
 
-        {/* Steps */}
+        {/* Desktop — horizontal connected path */}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0 md:snap-none"
+          className="relative hidden md:block"
         >
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <motion.div
-                key={step.title}
-                variants={item}
-                className="group relative w-[76%] shrink-0 snap-center rounded-2xl border border-border bg-card/40 p-6 transition-colors duration-300 hover:border-primary/40 md:w-auto md:p-7"
-              >
-                {/* Step number — big, monospace, faint until hover */}
-                <span className="pointer-events-none absolute right-5 top-4 font-term text-4xl md:text-5xl font-bold text-foreground/5 transition-colors duration-300 group-hover:text-primary/20">
-                  {String(i + 1).padStart(2, '0')}
+          {/* connecting line through the node centres */}
+          <div className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-7 h-px bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10" />
+          <div className="grid grid-cols-4 gap-6">
+            {steps.map((s, i) => (
+              <motion.div key={s.title} variants={item} className="flex flex-col items-center text-center">
+                <Node Icon={s.icon} />
+                <span className="mt-5 font-term text-[11px] uppercase tracking-widest text-primary">
+                  Step {String(i + 1).padStart(2, '0')}
                 </span>
-
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
-                  <Icon className="h-5 w-5" />
-                </span>
-
-                <h3 className="mt-5 text-lg md:text-xl font-bold">{step.title}</h3>
-                <p className="mt-2 text-sm md:text-[15px] leading-relaxed text-muted-foreground">
-                  {step.description}
-                </p>
+                <h3 className="mt-1.5 font-display text-lg font-bold uppercase tracking-tight lg:text-xl">{s.title}</h3>
+                <p className="mt-2 max-w-[24ch] text-sm leading-relaxed text-muted-foreground">{s.description}</p>
               </motion.div>
-            );
-          })}
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Mobile — vertical timeline */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          className="relative md:hidden"
+        >
+          <div className="pointer-events-none absolute bottom-6 left-7 top-6 w-px bg-gradient-to-b from-primary/10 via-primary/50 to-primary/10" />
+          <div className="space-y-8">
+            {steps.map((s, i) => (
+              <motion.div key={s.title} variants={item} className="flex gap-5">
+                <Node Icon={s.icon} />
+                <div className="pt-1">
+                  <span className="font-term text-[11px] uppercase tracking-widest text-primary">
+                    Step {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="mt-1 font-display text-lg font-bold uppercase tracking-tight">{s.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

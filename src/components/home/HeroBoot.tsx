@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { MovingBorderButton } from '@/components/ui/moving-border';
 
 // Animated silk shader background (Three.js) — lazy so it never blocks paint.
 const ShaderBackground = lazy(() => import('@/components/fx/ShaderBackground'));
@@ -86,13 +87,17 @@ export function HeroBoot() {
           animate="show"
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
-          <a
+          <MovingBorderButton
+            as="a"
             href="#community"
-            className="inline-flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 font-display text-sm md:text-base font-bold uppercase tracking-[0.15em] text-primary-foreground shadow-[0_0_34px_-6px_hsl(var(--gold)/0.65)] transition-transform duration-300 hover:scale-[1.04]"
+            borderRadius="9999px"
+            duration={2800}
+            containerClassName="h-14 w-auto shadow-[0_0_34px_-10px_hsl(var(--gold)/0.6)] transition-transform duration-300 hover:scale-[1.04]"
+            className="gap-2.5 px-8 font-display text-sm md:text-base font-bold uppercase tracking-[0.15em]"
           >
             Get the App
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </MovingBorderButton>
         </motion.div>
 
         {/* meta line */}
