@@ -110,7 +110,7 @@ export function CommunitySection() {
                 <Avatar key={i} initials={i} className="h-7 w-7 text-[10px] ring-2 ring-background" />
               ))}
             </div>
-            <span className="text-sm font-medium">Be one of the first players</span>
+            <span className="font-term text-xs uppercase tracking-widest">Players are already competing</span>
           </motion.div>
 
           {/* Headline */}
@@ -119,7 +119,7 @@ export function CommunitySection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.8, ease, delay: 0.1 }}
-            className="text-[clamp(2rem,6vw,4.5rem)] font-extrabold leading-[0.95] tracking-tighter"
+            className="font-display uppercase text-[clamp(2rem,6vw,4.5rem)] font-bold leading-[0.95] tracking-tight"
           >
             Join the players
             <br />
@@ -170,9 +170,9 @@ export function CommunitySection() {
                     ))}
                   </div>
                 ) : (
-                  <span className="text-3xl font-extrabold tracking-tight md:text-4xl">{s.value}</span>
+                  <span className="font-display text-3xl font-bold tracking-tight md:text-4xl">{s.value}</span>
                 )}
-                <span className="mt-2 text-sm font-medium text-muted-foreground">{s.label}</span>
+                <span className="mt-2 font-term text-xs uppercase tracking-widest text-muted-foreground">{s.label}</span>
               </div>
             ))}
           </motion.div>

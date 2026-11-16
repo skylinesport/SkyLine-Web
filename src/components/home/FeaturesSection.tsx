@@ -78,10 +78,10 @@ export function FeaturesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, ease: smoothEase }}
-            className="flex items-baseline gap-3 md:gap-4 mb-3 md:mb-4"
+            className="flex items-baseline gap-3 md:gap-4 mb-3 md:mb-4 font-term"
           >
-            <span className="text-muted-foreground text-xs md:text-sm font-medium">03</span>
-            <span className="text-muted-foreground text-xs md:text-sm">/Features</span>
+            <span className="text-primary text-xs md:text-sm">03</span>
+            <span className="text-muted-foreground text-xs md:text-sm uppercase tracking-widest">/Features</span>
           </motion.div>
           
           <div className="overflow-hidden">
@@ -90,9 +90,9 @@ export function FeaturesSection() {
               whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, ease: smoothEase }}
-              className="text-[clamp(2rem,6vw,5rem)] font-extrabold leading-[0.95] tracking-tighter"
+              className="font-display uppercase text-[clamp(2rem,6vw,5rem)] font-bold leading-[0.95] tracking-tight"
             >
-              Why<span className="gold-text">SkyLine</span>?
+              Why <span className="gold-text">SkyLine</span>?
             </motion.h2>
           </div>
         </div>
@@ -103,19 +103,19 @@ export function FeaturesSection() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           variants={containerVariants}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:mx-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0 md:snap-none"
         >
           {features.map((feature) => (
             <motion.div
               key={feature.title}
               variants={cardVariants}
-              className="group p-5 md:p-8 rounded-xl md:rounded-2xl border border-border hover:border-primary/50 hover:bg-muted/30 transition-all duration-300"
+              className="group w-[76%] shrink-0 snap-center p-5 md:w-auto md:p-8 rounded-xl md:rounded-2xl border border-border hover:border-primary/50 hover:bg-muted/30 transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-4 md:mb-6">
                 <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                   <feature.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                 </div>
-                <span className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                <span className="font-term text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider">
                   {feature.category}
                 </span>
               </div>

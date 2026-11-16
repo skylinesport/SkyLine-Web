@@ -1,82 +1,70 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/logo.png';
+import { cn } from '@/lib/utils';
 
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 60));
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <>
+      {/* Resizable nav: full-width bar at the top, shrinks into a floating pill on scroll */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: smoothEase }}
-        className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50"
+        className="fixed inset-x-0 top-0 z-50 flex justify-center"
       >
-        <div className="container mx-auto px-4 md:px-8 lg:px-16 h-16 flex items-center justify-between">
-          {/* Left - Tagline (hidden on mobile) */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: smoothEase, delay: 0.2 }}
-            className="hidden md:block text-sm text-muted-foreground font-medium"
-          >
-            {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}, Free Esports Tournaments
-          </motion.div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden p-2 -ml-2 text-foreground"
-            aria-label="Toggle menu"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-
-          {/* Center - Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: smoothEase, delay: 0.1 }}
-            className="absolute left-1/2 -translate-x-1/2"
-          >
+        <motion.div
+          initial={false}
+          animate={{ maxWidth: scrolled ? 940 : 1536, marginTop: scrolled ? 12 : 0, borderRadius: scrolled ? 9999 : 0 }}
+          transition={{ duration: 0.35, ease: smoothEase }}
+          className={cn(
+            'relative flex h-14 w-full items-center justify-between px-4 backdrop-blur-xl transition-colors duration-300 md:px-8',
+            scrolled
+              ? 'border border-border bg-background/85 shadow-lg shadow-black/30'
+              : 'border-b border-border/50 bg-background/60',
+          )}
+        >
+          {/* Left — logo (+ tagline on desktop) */}
+          <div className="flex items-center gap-3">
             <Link to="/" onClick={closeMenu}>
-              <img src={logo} alt="Skylinesport" className="h-7 md:h-8 w-auto dark:invert" />
+              <img src={logo} alt="SkyLinEsport" className="h-7 md:h-8 w-auto dark:invert" />
             </Link>
-          </motion.div>
-
-          {/* Right - Menu (Desktop) */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: smoothEase, delay: 0.3 }}
-            className="hidden md:flex items-center gap-2"
-          >
-            <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2">
-              Features
-            </a>
-            <ThemeToggle />
-            <a href="#community">
-              <Button variant="ghost" size="sm" className="font-medium">
-                Get the App
-              </Button>
-            </a>
-          </motion.div>
-
-          {/* Right - Mobile Icons */}
-          <div className="flex md:hidden items-center gap-1">
-            <ThemeToggle />
+            <span className="hidden md:block font-term text-xs uppercase tracking-widest text-muted-foreground">
+              Free Esports Tournaments
+            </span>
           </div>
-        </div>
+
+          {/* Right — Ambassadors (desktop) / menu button (mobile) */}
+          <div className="flex items-center">
+            <Link
+              to="/ambassadors"
+              className="hidden md:inline font-term text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors px-2"
+            >
+              Ambassadors
+            </Link>
+            <button
+              onClick={toggleMenu}
+              className="md:hidden -mr-2 p-2 text-foreground"
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+        </motion.div>
       </motion.nav>
 
       {/* Mobile Menu Overlay */}
@@ -128,13 +116,13 @@ export function Navbar() {
                   >
                     About
                   </a>
-                  <a
-                    href="#features"
+                  <Link
+                    to="/ambassadors"
                     onClick={closeMenu}
                     className="block px-4 py-3 rounded-lg text-foreground font-medium hover:bg-muted transition-colors"
                   >
-                    Features
-                  </a>
+                    Ambassadors
+                  </Link>
                 </nav>
 
                 {/* Bottom Actions */}
