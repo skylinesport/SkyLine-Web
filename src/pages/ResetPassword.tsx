@@ -96,7 +96,7 @@ export default function ResetPassword() {
   // ── Form ──
   return (
     <Shell>
-      <h1 className="text-2xl font-bold mb-2">Set a new password</h1>
+      <h1 className="font-display uppercase text-2xl md:text-3xl font-bold tracking-tight mb-2">Set a new password</h1>
       <p className="text-muted-foreground mb-6">Choose a new password for your Skylinesport account.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -173,7 +173,7 @@ function StatusCard({ icon, title, body }: { icon: React.ReactNode; title: strin
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-6">
       <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">{icon}</div>
-      <h1 className="text-2xl font-bold mb-2">{title}</h1>
+      <h1 className="font-display uppercase text-2xl md:text-3xl font-bold tracking-tight mb-2">{title}</h1>
       <p className="text-muted-foreground">{body}</p>
     </motion.div>
   );

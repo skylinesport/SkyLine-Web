@@ -28,9 +28,9 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: smoothEase, delay: 0.2 }}
-            className="hidden md:block text-sm text-muted-foreground font-medium"
+            className="hidden md:block font-term text-xs uppercase tracking-widest text-muted-foreground"
           >
-            {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}, Free Esports Tournaments
+            Free Esports Tournaments
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -61,14 +61,15 @@ export function Navbar() {
             transition={{ duration: 0.6, ease: smoothEase, delay: 0.3 }}
             className="hidden md:flex items-center gap-2"
           >
-            <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2">
-              Features
-            </a>
+            <Link to="/ambassadors" className="font-term text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors px-2">
+              Ambassadors
+            </Link>
             <ThemeToggle />
-            <a href="#community">
-              <Button variant="ghost" size="sm" className="font-medium">
-                Get the App
-              </Button>
+            <a
+              href="#community"
+              className="font-term text-xs uppercase tracking-widest rounded-full border border-primary/40 px-4 py-2 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              Get the App
             </a>
           </motion.div>
 
@@ -128,13 +129,13 @@ export function Navbar() {
                   >
                     About
                   </a>
-                  <a
-                    href="#features"
+                  <Link
+                    to="/ambassadors"
                     onClick={closeMenu}
                     className="block px-4 py-3 rounded-lg text-foreground font-medium hover:bg-muted transition-colors"
                   >
-                    Features
-                  </a>
+                    Ambassadors
+                  </Link>
                 </nav>
 
                 {/* Bottom Actions */}

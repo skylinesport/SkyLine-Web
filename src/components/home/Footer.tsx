@@ -72,7 +72,7 @@ export function Footer() {
                 viewport={{ once: true, margin: "-100px" }}
                 custom={0.1}
                 variants={textRevealVariants}
-                className="text-[clamp(1.75rem,6vw,6rem)] font-extrabold leading-[0.95] tracking-tighter"
+                className="font-display uppercase text-[clamp(1.75rem,6vw,6rem)] font-bold leading-[0.95] tracking-tight"
               >
                 <span className="inline-flex items-center gap-2 md:gap-4 group-hover:gold-text transition-colors duration-500">
                   Enter the Arena
@@ -134,7 +134,7 @@ export function Footer() {
             custom={0.3}
             variants={fadeUpVariants}
           >
-            <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-3 md:mb-4">Navigation</p>
+            <p className="font-term text-[10px] md:text-xs text-muted-foreground uppercase tracking-widest mb-3 md:mb-4">Navigation</p>
             <ul className="space-y-2 md:space-y-3">
               {navLinks.map((link) => (
                 <li key={link.name}>
@@ -160,7 +160,7 @@ export function Footer() {
             custom={0.4}
             variants={fadeUpVariants}
           >
-            <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-3 md:mb-4">Connect</p>
+            <p className="font-term text-[10px] md:text-xs text-muted-foreground uppercase tracking-widest mb-3 md:mb-4">Connect</p>
             <ul className="space-y-2 md:space-y-3">
               {socialLinks.map((link) => (
                 <li key={link.name}>
@@ -229,7 +229,7 @@ export function Footer() {
           {[...Array(4)].map((_, i) => (
             <span 
               key={i} 
-              className="text-[clamp(2rem,8vw,8rem)] font-extrabold tracking-tighter text-foreground/10 mx-4 md:mx-8"
+              className="font-display uppercase text-[clamp(2rem,8vw,8rem)] font-bold tracking-tight text-foreground/[0.07] mx-4 md:mx-8"
             >
 SKYLINESPORTS • BGMI • FREE FIRE • COD • FORTNITE • TOURNAMENTS •
             </span>
