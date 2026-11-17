@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, animate, useInView } from 'framer-motion';
 import { ArrowLeft, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
 import logo from '@/assets/logo.png';
@@ -8,10 +8,45 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect';
 import { VanishInput } from '@/components/ui/vanish-input';
+import { IndiaMap } from '@/components/ui/india-map';
 import { Footer } from '@/components/home/Footer';
 
 const ease: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
 const CAMPUS_EMAIL = 'support@skylinesport.in';
+
+// Headline numbers under the map. ⚠️ PLACEHOLDERS — replace `value` with the
+// real figures before this goes live (don't ship invented stats).
+const STATS: { value: number; suffix?: string; prefix?: string; label: string }[] = [
+  { value: 25, suffix: '+', label: 'Campuses live' },
+  { value: 1000, suffix: '+', label: 'Players reached' },
+  { value: 50, prefix: '₹', suffix: 'K+', label: 'Prizes awarded' },
+];
+
+/** A single count-up stat that animates when scrolled into view. */
+function Stat({ value, suffix, prefix, label }: (typeof STATS)[number]) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, value, {
+      duration: 1.4,
+      ease: 'easeOut',
+      onUpdate: (v) => setN(Math.floor(v)),
+    });
+    return () => controls.stop();
+  }, [inView, value]);
+  return (
+    <div ref={ref}>
+      <p className="font-display text-2xl font-bold text-primary md:text-3xl">
+        {prefix}
+        {n.toLocaleString('en-IN')}
+        {suffix}
+      </p>
+      <p className="mt-1 font-term text-[10px] uppercase tracking-wider text-muted-foreground md:text-xs">{label}</p>
+    </div>
+  );
+}
 
 /**
  * Campus ambassadors showcase + application page.
@@ -168,64 +203,84 @@ export default function Ambassadors() {
         </div>
       </section>
 
-      {/* Apply */}
+      {/* Apply — form on the left, map + pitch on the right */}
       <section id="apply" className="px-4 py-12 md:px-8 md:py-20 lg:px-16">
-        <div className="container mx-auto max-w-2xl">
-          <div className="mb-8 flex items-baseline gap-3 font-term">
-            <span className="text-primary text-xs md:text-sm">02</span>
-            <span className="text-muted-foreground text-xs md:text-sm uppercase tracking-widest">/Apply</span>
+        <div className="container mx-auto">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            {/* Right — the application form */}
+            <form
+              onSubmit={handleSubmit}
+              className="order-2 space-y-5 rounded-2xl border border-border bg-card/40 p-6 md:p-8"
+            >
+              <div className="space-y-2">
+                <Label htmlFor="name" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Name</Label>
+                <VanishInput
+                  id="name"
+                  placeholders={['Your full name', 'What should we call you?', 'e.g. your gamertag + name']}
+                  value={form.name}
+                  onChange={(v) => setForm((f) => ({ ...f, name: v }))}
+                  vanishSignal={vanishSignal}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Email</Label>
+                <VanishInput
+                  id="email"
+                  type="email"
+                  placeholders={['you@example.com', 'Your college email', 'Where can we reach you?']}
+                  value={form.email}
+                  onChange={(v) => setForm((f) => ({ ...f, email: v }))}
+                  vanishSignal={vanishSignal}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="college" className="font-term text-xs uppercase tracking-widest text-muted-foreground">College</Label>
+                <VanishInput
+                  id="college"
+                  placeholders={['Your college / university', 'Where do you study?', 'e.g. your campus name']}
+                  value={form.college}
+                  onChange={(v) => setForm((f) => ({ ...f, college: v }))}
+                  vanishSignal={vanishSignal}
+                />
+              </div>
+              <Button type="submit" className="w-full font-display uppercase tracking-[0.15em]" size="lg">
+                Submit application
+              </Button>
+              <p className="text-center font-term text-[11px] uppercase tracking-wider text-muted-foreground">
+                Or email us at{' '}
+                <a href={`mailto:${CAMPUS_EMAIL}`} className="text-primary hover:underline">
+                  {CAMPUS_EMAIL}
+                </a>
+              </p>
+            </form>
+
+            {/* Left — pitch + animated India map */}
+            <div className="order-1">
+              <div className="mb-6 flex items-baseline gap-3 font-term">
+                <span className="text-primary text-xs md:text-sm">02</span>
+                <span className="text-muted-foreground text-xs md:text-sm uppercase tracking-widest">/Apply</span>
+              </div>
+
+              <h2 className="font-display uppercase whitespace-nowrap text-[clamp(1.4rem,5.1vw,2.75rem)] font-bold leading-[0.95] tracking-tight">
+                Become an <span className="gold-text">ambassador</span>
+              </h2>
+              <p className="mt-4 max-w-md text-muted-foreground">
+                Lead the gaming community at your college. Run tournaments, grow your network, and get
+                rewarded. Drop your details and we&apos;ll reach out.
+              </p>
+
+              <div className="mt-8">
+                <IndiaMap />
+              </div>
+
+              {/* Headline numbers */}
+              <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border/60 pt-6">
+                {STATS.map((s) => (
+                  <Stat key={s.label} {...s} />
+                ))}
+              </div>
+            </div>
           </div>
-
-          <h2 className="font-display uppercase text-[clamp(1.8rem,6vw,3.5rem)] font-bold leading-[0.95] tracking-tight">
-            Become an <span className="gold-text">ambassador</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Lead the gaming community at your college. Run tournaments, grow your network, and get
-            rewarded. Drop your details and we&apos;ll reach out.
-          </p>
-
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5 rounded-2xl border border-border bg-card/40 p-6 md:p-8">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Name</Label>
-              <VanishInput
-                id="name"
-                placeholders={['Your full name', 'What should we call you?', 'e.g. your gamertag + name']}
-                value={form.name}
-                onChange={(v) => setForm((f) => ({ ...f, name: v }))}
-                vanishSignal={vanishSignal}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="font-term text-xs uppercase tracking-widest text-muted-foreground">Email</Label>
-              <VanishInput
-                id="email"
-                type="email"
-                placeholders={['you@example.com', 'Your college email', 'Where can we reach you?']}
-                value={form.email}
-                onChange={(v) => setForm((f) => ({ ...f, email: v }))}
-                vanishSignal={vanishSignal}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="college" className="font-term text-xs uppercase tracking-widest text-muted-foreground">College</Label>
-              <VanishInput
-                id="college"
-                placeholders={['Your college / university', 'Where do you study?', 'e.g. your campus name']}
-                value={form.college}
-                onChange={(v) => setForm((f) => ({ ...f, college: v }))}
-                vanishSignal={vanishSignal}
-              />
-            </div>
-            <Button type="submit" className="w-full font-display uppercase tracking-[0.15em]" size="lg">
-              Submit application
-            </Button>
-            <p className="text-center font-term text-[11px] uppercase tracking-wider text-muted-foreground">
-              Or email us at{' '}
-              <a href={`mailto:${CAMPUS_EMAIL}`} className="text-primary hover:underline">
-                {CAMPUS_EMAIL}
-              </a>
-            </p>
-          </form>
         </div>
       </section>
 
