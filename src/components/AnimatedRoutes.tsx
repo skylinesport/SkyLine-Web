@@ -9,6 +9,7 @@ import DeleteAccount from '@/pages/DeleteAccount';
 import Ambassadors from '@/pages/Ambassadors';
 import Download from '@/pages/Download';
 import NotFound from '@/pages/NotFound';
+import { AMBASSADORS_ENABLED } from '@/lib/features';
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -56,14 +57,19 @@ export function AnimatedRoutes() {
             </PageTransition>
           }
         />
-        <Route
-          path="/ambassadors"
-          element={
-            <PageTransition>
-              <Ambassadors />
-            </PageTransition>
-          }
-        />
+        {/* Campus Ambassadors — hidden until real photos are ready
+            (AMBASSADORS_ENABLED in lib/features). While off, /ambassadors
+            falls through to NotFound. */}
+        {AMBASSADORS_ENABLED && (
+          <Route
+            path="/ambassadors"
+            element={
+              <PageTransition>
+                <Ambassadors />
+              </PageTransition>
+            }
+          />
+        )}
         <Route
           path="/download"
           element={
