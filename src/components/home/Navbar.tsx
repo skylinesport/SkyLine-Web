@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/logo.png';
+import { AMBASSADORS_ENABLED } from '@/lib/features';
 import { cn } from '@/lib/utils';
 
 const smoothEase: [number, number, number, number] = [0.6, 0.01, 0.05, 0.95];
@@ -50,12 +51,14 @@ export function Navbar() {
 
           {/* Right — Ambassadors (desktop) / menu button (mobile) */}
           <div className="flex items-center">
-            <Link
-              to="/ambassadors"
-              className="hidden md:inline font-term text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors px-2"
-            >
-              Ambassadors
-            </Link>
+            {AMBASSADORS_ENABLED && (
+              <Link
+                to="/ambassadors"
+                className="hidden md:inline font-term text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors px-2"
+              >
+                Ambassadors
+              </Link>
+            )}
             <button
               onClick={toggleMenu}
               className="md:hidden -mr-2 p-2 text-foreground"
@@ -116,13 +119,15 @@ export function Navbar() {
                   >
                     About
                   </a>
-                  <Link
-                    to="/ambassadors"
-                    onClick={closeMenu}
-                    className="block px-4 py-3 rounded-lg text-foreground font-medium hover:bg-muted transition-colors"
-                  >
-                    Ambassadors
-                  </Link>
+                  {AMBASSADORS_ENABLED && (
+                    <Link
+                      to="/ambassadors"
+                      onClick={closeMenu}
+                      className="block px-4 py-3 rounded-lg text-foreground font-medium hover:bg-muted transition-colors"
+                    >
+                      Ambassadors
+                    </Link>
+                  )}
                 </nav>
 
                 {/* Bottom Actions */}
