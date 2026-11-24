@@ -7,6 +7,7 @@ import Terms from '@/pages/Terms';
 import Privacy from '@/pages/Privacy';
 import DeleteAccount from '@/pages/DeleteAccount';
 import Ambassadors from '@/pages/Ambassadors';
+import Download from '@/pages/Download';
 import NotFound from '@/pages/NotFound';
 
 export function AnimatedRoutes() {
@@ -60,6 +61,14 @@ export function AnimatedRoutes() {
           element={
             <PageTransition>
               <Ambassadors />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/download"
+          element={
+            <PageTransition>
+              <Download />
             </PageTransition>
           }
         />
